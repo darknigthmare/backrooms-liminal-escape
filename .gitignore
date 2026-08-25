@@ -1,0 +1,5 @@
+.vercel/
+node_modules/
+payload-*.txt
+.qa-*
+*.log

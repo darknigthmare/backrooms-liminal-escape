@@ -1,0 +1,2017 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#07090f">
+  <meta name="description" content="Collection jouable des jeux créés le 2 août 2026.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22><rect width=%2264%22 height=%2264%22 rx=%2214%22 fill=%22%2307090f%22/><path d=%22M14 39 26 15h12l12 24-9 10H23z%22 fill=%22%2331ffdb%22/><circle cx=%2232%22 cy=%2236%22 r=%227%22 fill=%22%2307090f%22/></svg>">
+  <title>Jeux du 2 août 2026</title>
+  <style>:root {
+  color-scheme: dark;
+  --bg: #05060a;
+  --panel: rgba(12, 16, 24, 0.92);
+  --panel-2: rgba(22, 28, 40, 0.82);
+  --line: rgba(255, 255, 255, 0.14);
+  --text: #eef3ff;
+  --muted: #9ba7bd;
+  --accent: #8df5db;
+  --accent-2: #ff5a8d;
+  --danger: #ff5c5c;
+  --warning: #ffc85a;
+  --good: #6cf59a;
+  --shadow: 0 18px 60px rgba(0, 0, 0, 0.42);
+}
+
+* { box-sizing: border-box; }
+html, body { min-height: 100%; }
+body {
+  margin: 0;
+  overflow-x: hidden;
+  background:
+    radial-gradient(circle at 15% 10%, rgba(73, 110, 164, 0.16), transparent 32rem),
+    radial-gradient(circle at 85% 90%, rgba(122, 42, 90, 0.15), transparent 30rem),
+    linear-gradient(155deg, #080a10, var(--bg));
+  color: var(--text);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: .22;
+  background-image: repeating-linear-gradient(0deg, transparent 0 3px, rgba(255,255,255,.035) 3px 4px);
+  mix-blend-mode: overlay;
+  z-index: 30;
+}
+button, input, select { font: inherit; }
+a { color: inherit; }
+
+.app-shell {
+  width: min(1500px, 100%);
+  margin: 0 auto;
+  min-height: 100vh;
+  padding: 18px;
+  display: grid;
+  gap: 14px;
+  grid-template-rows: auto 1fr auto;
+}
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 16px 18px;
+  background: linear-gradient(145deg, rgba(16, 20, 30, .96), rgba(9, 11, 17, .9));
+  box-shadow: var(--shadow);
+}
+.brand { min-width: 0; }
+.brand-kicker {
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: .22em;
+  font-size: .72rem;
+  font-weight: 800;
+}
+h1 {
+  margin: 3px 0 2px;
+  font-size: clamp(1.35rem, 2.7vw, 2.55rem);
+  line-height: 1;
+  letter-spacing: -.04em;
+}
+.subtitle {
+  margin: 0;
+  color: var(--muted);
+  max-width: 72ch;
+  font-size: .94rem;
+}
+.top-actions { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; }
+
+.btn {
+  min-height: 42px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.16);
+  background: rgba(255,255,255,.06);
+  color: var(--text);
+  padding: 9px 13px;
+  font-weight: 760;
+  letter-spacing: .01em;
+  cursor: pointer;
+  transition: transform .14s ease, background .14s ease, border-color .14s ease, opacity .14s ease;
+}
+.btn:hover { transform: translateY(-1px); background: rgba(255,255,255,.11); border-color: rgba(255,255,255,.28); }
+.btn:active { transform: translateY(1px); }
+.btn.primary { color: #06100e; background: var(--accent); border-color: transparent; }
+.btn.danger { background: rgba(255, 70, 92, .15); border-color: rgba(255, 90, 110, .4); }
+.btn.warning { background: rgba(255, 194, 68, .14); border-color: rgba(255, 194, 68, .35); }
+.btn:disabled { opacity: .4; cursor: not-allowed; transform: none; }
+
+.game-layout {
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 330px;
+  gap: 14px;
+  align-items: start;
+}
+.stage-card,
+.side-card,
+.footer-card {
+  border: 1px solid var(--line);
+  background: var(--panel);
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+}
+.stage-card {
+  position: relative;
+  overflow: hidden;
+  min-height: 0;
+  aspect-ratio: 16 / 9;
+  align-self: start;
+  display: block;
+}
+.stage-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  box-shadow: inset 0 0 90px rgba(0,0,0,.5);
+}
+canvas {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  min-height: 0;
+  display: block;
+  touch-action: none;
+  outline: none;
+}
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 12;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(2, 3, 6, .7);
+  backdrop-filter: blur(6px);
+}
+.overlay[hidden] { display: none; }
+.overlay-panel {
+  width: min(680px, 100%);
+  max-height: 90%;
+  overflow: auto;
+  border: 1px solid rgba(255,255,255,.2);
+  border-radius: 22px;
+  padding: 24px;
+  background: linear-gradient(160deg, rgba(23,28,40,.97), rgba(8,10,16,.97));
+  box-shadow: 0 25px 90px rgba(0,0,0,.65);
+}
+.overlay-title { margin: 0 0 9px; font-size: clamp(1.6rem, 4vw, 3rem); line-height: .98; }
+.overlay-copy { color: #c6cfde; line-height: 1.58; }
+.overlay-actions { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 18px; }
+
+.side-card {
+  padding: 14px;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.panel-section {
+  border: 1px solid rgba(255,255,255,.1);
+  background: var(--panel-2);
+  border-radius: 15px;
+  padding: 12px;
+}
+.panel-title {
+  margin: 0 0 10px;
+  font-size: .74rem;
+  text-transform: uppercase;
+  letter-spacing: .18em;
+  color: var(--accent);
+}
+.status-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.status-item {
+  min-width: 0;
+  border: 1px solid rgba(255,255,255,.08);
+  background: rgba(0,0,0,.23);
+  border-radius: 11px;
+  padding: 9px;
+}
+.status-label { color: var(--muted); font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; }
+.status-value { margin-top: 4px; font-weight: 850; overflow-wrap: anywhere; }
+.meter { height: 8px; border-radius: 99px; overflow: hidden; background: rgba(255,255,255,.08); margin-top: 7px; }
+.meter > i { display: block; width: 50%; height: 100%; background: var(--accent); border-radius: inherit; transition: width .2s ease; }
+.objective { color: #e8edf7; line-height: 1.45; }
+.objective strong { color: var(--warning); }
+.log {
+  flex: 1;
+  min-height: 150px;
+  max-height: 270px;
+  overflow: auto;
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 6px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: .75rem;
+}
+.log-line { border-left: 2px solid rgba(255,255,255,.18); padding: 4px 0 4px 8px; color: #b8c2d3; }
+.log-line.good { border-color: var(--good); color: #c7ffdc; }
+.log-line.bad { border-color: var(--danger); color: #ffd0d0; }
+.log-line.warn { border-color: var(--warning); color: #ffe8b5; }
+.action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.action-grid .btn.wide { grid-column: 1 / -1; }
+
+.footer-card {
+  padding: 10px 12px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.controls-copy { color: var(--muted); font-size: .82rem; }
+.badges { display: flex; gap: 7px; flex-wrap: wrap; }
+.badge {
+  border: 1px solid rgba(255,255,255,.13);
+  background: rgba(255,255,255,.05);
+  color: #c9d2e2;
+  border-radius: 999px;
+  padding: 6px 9px;
+  font-size: .73rem;
+}
+
+.touch-pad {
+  display: none;
+  position: absolute;
+  z-index: 8;
+  left: 14px;
+  right: 14px;
+  bottom: 14px;
+  pointer-events: none;
+  justify-content: space-between;
+  align-items: end;
+}
+.touch-cluster { display: grid; gap: 5px; pointer-events: auto; }
+.touch-cluster.dpad { grid-template-columns: repeat(3, 52px); grid-template-rows: repeat(3, 48px); }
+.touch-cluster.actions { grid-template-columns: repeat(2, 64px); }
+.touch-btn {
+  border: 1px solid rgba(255,255,255,.25);
+  background: rgba(5,8,14,.7);
+  color: #fff;
+  border-radius: 14px;
+  min-height: 46px;
+  font-weight: 900;
+  backdrop-filter: blur(5px);
+  touch-action: none;
+  user-select: none;
+}
+.touch-btn:active, .touch-btn.active { background: var(--accent); color: #06100e; }
+.touch-spacer { visibility: hidden; }
+
+.hub {
+  width: min(1220px, 100%);
+  margin: 0 auto;
+  padding: 30px 18px 60px;
+}
+.hub-hero {
+  border: 1px solid var(--line);
+  border-radius: 26px;
+  padding: clamp(24px, 5vw, 58px);
+  background: linear-gradient(140deg, rgba(20,26,39,.96), rgba(8,10,15,.95));
+  box-shadow: var(--shadow);
+}
+.hub-hero h1 { font-size: clamp(2.1rem, 7vw, 5.2rem); max-width: 12ch; }
+.hub-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 16px; }
+.game-card {
+  min-height: 250px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 20px;
+  border-radius: 22px;
+  border: 1px solid var(--line);
+  background:
+    radial-gradient(circle at 70% 10%, var(--card-glow, rgba(141,245,219,.18)), transparent 52%),
+    linear-gradient(155deg, rgba(23,28,40,.96), rgba(8,10,15,.96));
+  box-shadow: var(--shadow);
+  text-decoration: none;
+  transition: transform .18s ease, border-color .18s ease;
+}
+.game-card:hover { transform: translateY(-4px); border-color: rgba(255,255,255,.32); }
+.game-card small { text-transform: uppercase; letter-spacing: .16em; color: var(--accent); font-weight: 850; }
+.game-card h2 { margin: 0; font-size: 1.55rem; }
+.game-card p { margin: 0; color: var(--muted); line-height: 1.5; }
+.game-card .launch { margin-top: 4px; color: #fff; font-weight: 800; }
+.hub-note { color: var(--muted); margin-top: 18px; line-height: 1.5; }
+
+body[data-game="arcade-null"] { --accent: #5fffe1; --accent-2: #ff3d88; }
+body[data-game="kidz-tv-after-hours"] { --accent: #ffe85c; --accent-2: #ff59c7; }
+body[data-game="l-envers-service-de-nuit"] { --accent: #9d8cff; --accent-2: #ff5c6e; }
+body[data-game="liminal-escape"] { --accent: #f0da62; --accent-2: #62b4ff; }
+body[data-game="nocturne-dead-frequency"] { --accent: #52e8ff; --accent-2: #ff496c; }
+body[data-game="chord-of-dread"] { --accent: #ff5b5b; --accent-2: #b55cff; }
+
+@media (max-width: 1000px) {
+  .game-layout { grid-template-columns: 1fr; }
+  .side-card { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .side-card .panel-section:last-child { grid-column: 1 / -1; }
+  .hub-grid { grid-template-columns: repeat(2, 1fr); }
+  .stage-card { min-height: 0; }
+}
+@media (max-width: 700px) {
+  .app-shell { padding: 8px; gap: 8px; }
+  .topbar { border-radius: 15px; padding: 12px; align-items: flex-start; }
+  .top-actions { flex-direction: column; }
+  .top-actions .btn { min-height: 36px; padding: 6px 9px; }
+  .stage-card, .side-card, .footer-card { border-radius: 15px; }
+  .stage-card { min-height: 0; }
+  canvas { min-height: 0; }
+  .side-card { display: flex; }
+  .hub-grid { grid-template-columns: 1fr; }
+  .touch-pad { display: flex; }
+  .footer-card { padding-bottom: 8px; }
+}
+@media (pointer: coarse) {
+  .touch-pad { display: flex; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .001ms !important; animation-duration: .001ms !important; animation-iteration-count: 1 !important; }
+}
+</style>
+</head>
+<body>
+<script>const rawRoute = new URLSearchParams(location.search).get("game") || location.pathname.split("/").filter(Boolean).pop() || "liminal-escape";
+const route = rawRoute === "index.html" ? "liminal-escape" : rawRoute;
+if (!route) {
+  document.title = "Collection du 2 août 2026 — darknigthmare";
+  document.body.innerHTML = "\n  <main class=\"hub\">\n    <section class=\"hub-hero\">\n      <div class=\"brand-kicker\">darknigthmare · collection restaurée</div>\n      <h1>Les jeux du 2 août 2026</h1>\n      <p class=\"subtitle\">Six éditions autonomes restaurées, plus les deux productions déjà publiées séparément. Tous les jeux fonctionnent sans compte, enregistrent localement leur progression et utilisent uniquement des graphismes et sons procéduraux originaux.</p>\n      <div class=\"badges\" style=\"margin-top:18px\"><span class=\"badge\">Clavier + tactile</span><span class=\"badge\">Sauvegarde locale</span><span class=\"badge\">Audio Web Audio</span><span class=\"badge\">Aucune dépendance</span></div>\n    </section>\n    <section class=\"hub-grid\"><a class=\"game-card\" href=\"/arcade-null/\" style=\"--card-glow:rgba(49,255,219,.22)\">\n  <small>Arcade horror / boucle d’anomalies</small><h2>ARCADE NULL — High Score Protocol</h2><p>Inspectez Asterion Arcade, refusez les anomalies et conquérez la borne VOID//RUNNER jusqu’au rang n°1.</p><span class=\"launch\">Lancer le jeu →</span>\n</a>\n<a class=\"game-card\" href=\"/kidz-tv-after-hours/\" style=\"--card-glow:rgba(255,231,83,.22)\">\n  <small>Horreur raycast / mascottes 2D</small><h2>KIDZ-TV: AFTER HOURS</h2><p>Traversez le Studio Mirliton, alternez À l’antenne et Hors antenne, puis survivez aux mascottes oubliées.</p><span class=\"launch\">Lancer le jeu →</span>\n</a>\n<a class=\"game-card\" href=\"/l-envers-service-de-nuit/\" style=\"--card-glow:rgba(157,140,255,.24)\">\n  <small>Survival horror narratif</small><h2>L’ENVERS — Service de nuit</h2><p>Traitez neuf interventions nocturnes entre le Réel, le Décalage et l’Envers. Quatre fins vous attendent.</p><span class=\"launch\">Lancer le jeu →</span>\n</a>\n<a class=\"game-card\" href=\"/liminal-escape/\" style=\"--card-glow:rgba(240,218,98,.22)\">\n  <small>Exploration liminale</small><h2>Backrooms — Liminal Escape</h2><p>Échappez aux bureaux jaunes, à la station inondée et à l’hôtel rouge en gérant batterie, objets et entités.</p><span class=\"launch\">Lancer le jeu →</span>\n</a>\n<a class=\"game-card\" href=\"/nocturne-dead-frequency/\" style=\"--card-glow:rgba(82,232,255,.22)\">\n  <small>Rhythm survival horror — Prototype 1</small><h2>NOCTURNE: Dead Frequency</h2><p>Maintenez une fréquence morte sur quatre voies, repoussez la présence et survivez aux trois transmissions.</p><span class=\"launch\">Lancer le jeu →</span>\n</a>\n<a class=\"game-card\" href=\"/chord-of-dread/\" style=\"--card-glow:rgba(255,91,91,.22)\">\n  <small>Rhythm FPS — Prototype 2</small><h2>CHORD OF DREAD</h2><p>Armez vos accords sur le tempo, visez les silhouettes et affrontez le chef de chœur dans un boss en trois phases.</p><span class=\"launch\">Lancer le jeu →</span>\n</a></section>\n    <section class=\"hub-grid\" style=\"margin-top:14px\">\n      <a class=\"game-card\" href=\"https://terra-testudo-les-mondes-dos.vercel.app\" style=\"--card-glow:rgba(97,229,132,.2)\"><small>Déjà publié</small><h2>Terra Testudo — Les Mondes-Dos</h2><p>Construction, exploration et défense sur le dos d’une tortue-monde évolutive.</p><span class=\"launch\">Ouvrir la production →</span></a>\n      <a class=\"game-card\" href=\"https://nocturne-signal.vercel.app\" style=\"--card-glow:rgba(69,195,255,.2)\"><small>Déjà publié</small><h2>NOCTURNE SIGNAL</h2><p>Édition complète du survival rhythm horror en trois transmissions.</p><span class=\"launch\">Ouvrir la production →</span></a>\n    </section>\n    <p class=\"hub-note\">Collection datée du 2 août 2026. Les deux liens externes correspondent aux dépôts et projets Vercel déjà existants ; les six autres jeux sont servis depuis ce même dépôt pour préserver les livrables manquants sans écraser tes projets actuels.</p>\n  </main>\n";
+} else {
+const GAME_META = {
+  "arcade-null": {
+    title: "ARCADE NULL — High Score Protocol",
+    kicker: "Asterion Arcade · protocole de classement",
+    subtitle: "Détectez les anomalies, jouez uniquement lorsque la salle est sûre et atteignez le rang n°1 sur VOID//RUNNER.",
+    controls: "Inspection : boutons de décision. VOID//RUNNER : ZQSD/WASD ou flèches, tactile disponible.",
+    badges: ["Boucle d’anomalies", "Arcade jouable", "4 fins"],
+  },
+  "kidz-tv-after-hours": {
+    title: "KIDZ-TV: AFTER HOURS",
+    kicker: "Studio Mirliton · fermé depuis 1996",
+    subtitle: "Explorez un studio jeunesse abandonné en pseudo-3D, restaurez quatre relais et alternez À l’antenne / Hors antenne pour survivre.",
+    controls: "ZQSD/WASD pour marcher, flèches pour tourner, E pour interagir, B pour basculer l’antenne.",
+    badges: ["Raycast 3D", "Imposteurs 2D", "2 états du monde"],
+  },
+  "l-envers-service-de-nuit": {
+    title: "L’ENVERS — Service de nuit",
+    kicker: "Standard municipal · 00:07",
+    subtitle: "Traitez neuf interventions entre le Réel, le Décalage et l’Envers, gérez vos outils et choisissez ce que vous ramènerez à l’aube.",
+    controls: "Cliquez les lieux sur la carte. Utilisez les actions latérales pour changer de couche, inspecter et employer vos objets.",
+    badges: ["9 interventions", "3 couches", "4 fins"],
+  },
+  "liminal-escape": {
+    title: "Backrooms — Liminal Escape",
+    kicker: "Aucun signal · aucun plan fiable",
+    subtitle: "Traversez les bureaux jaunes, la station inondée et l’hôtel rouge. Trouvez les objets d’ouverture et échappez aux entités.",
+    controls: "ZQSD/WASD ou flèches pour se déplacer. Espace active l’impulsion de lampe lorsqu’elle est chargée.",
+    badges: ["3 niveaux", "Inventaire", "Fins multiples"],
+  },
+  "nocturne-dead-frequency": {
+    title: "NOCTURNE: Dead Frequency",
+    kicker: "Prototype 1 · fréquence 87.9 morte",
+    subtitle: "Frappez les quatre voies au bon instant, gardez le signal stable et repoussez la présence pendant trois transmissions.",
+    controls: "D, F, J, K pour les quatre voies. Espace déclenche le Feedback lorsque la jauge est pleine.",
+    badges: ["Rhythm horror", "3 transmissions", "Audio procédural"],
+  },
+  "chord-of-dread": {
+    title: "CHORD OF DREAD",
+    kicker: "Prototype 2 · rhythm FPS",
+    subtitle: "Armez des accords sur le tempo, visez les silhouettes et affrontez le Chef de chœur dans un combat en trois phases.",
+    controls: "A, S, D, F pour les cordes. Visez à la souris/tactile et cliquez pour tirer une fois l’accord chargé.",
+    badges: ["Rhythm FPS", "Boss 3 phases", "Combo de précision"],
+  },
+};
+
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const lerp = (a, b, t) => a + (b - a) * t;
+const rand = (a = 0, b = 1) => a + Math.random() * (b - a);
+const randi = (a, b) => Math.floor(rand(a, b + 1));
+const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+const dist = (a, b, c, d) => Math.hypot(a - c, b - d);
+const fmt = (n) => Math.round(n).toLocaleString("fr-FR");
+const TAU = Math.PI * 2;
+
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+class AudioBus {
+  constructor() {
+    this.ctx = null;
+    this.master = null;
+    this.enabled = true;
+    this.volume = 0.55;
+  }
+  ensure() {
+    if (!this.enabled) return null;
+    if (!this.ctx) {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return null;
+      this.ctx = new AC();
+      this.master = this.ctx.createGain();
+      this.master.gain.value = this.volume;
+      this.master.connect(this.ctx.destination);
+    }
+    if (this.ctx.state === "suspended") this.ctx.resume().catch(() => {});
+    return this.ctx;
+  }
+  setEnabled(v) {
+    this.enabled = v;
+    if (this.master) this.master.gain.value = v ? this.volume : 0;
+  }
+  tone(freq = 220, duration = 0.08, type = "sine", volume = 0.12, delay = 0, slide = 0) {
+    const ctx = this.ensure();
+    if (!ctx || !this.master) return;
+    const t = ctx.currentTime + delay;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = type;
+    osc.frequency.setValueAtTime(Math.max(20, freq), t);
+    if (slide) osc.frequency.exponentialRampToValueAtTime(Math.max(20, freq + slide), t + duration);
+    gain.gain.setValueAtTime(0.0001, t);
+    gain.gain.exponentialRampToValueAtTime(Math.max(0.0002, volume), t + Math.min(0.02, duration / 3));
+    gain.gain.exponentialRampToValueAtTime(0.0001, t + duration);
+    osc.connect(gain).connect(this.master);
+    osc.start(t);
+    osc.stop(t + duration + 0.02);
+  }
+  noise(duration = 0.12, volume = 0.08, delay = 0, filterFreq = 1200) {
+    const ctx = this.ensure();
+    if (!ctx || !this.master) return;
+    const length = Math.max(1, Math.floor(ctx.sampleRate * duration));
+    const buffer = ctx.createBuffer(1, length, ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < length; i++) data[i] = Math.random() * 2 - 1;
+    const src = ctx.createBufferSource();
+    const filter = ctx.createBiquadFilter();
+    const gain = ctx.createGain();
+    const t = ctx.currentTime + delay;
+    src.buffer = buffer;
+    filter.type = "lowpass";
+    filter.frequency.value = filterFreq;
+    gain.gain.setValueAtTime(volume, t);
+    gain.gain.exponentialRampToValueAtTime(0.0001, t + duration);
+    src.connect(filter).connect(gain).connect(this.master);
+    src.start(t);
+  }
+  chord(freqs, duration = 0.18, type = "triangle", volume = 0.08) {
+    freqs.forEach((f, i) => this.tone(f, duration, type, volume / Math.max(1, freqs.length * .72), i * .006));
+  }
+}
+
+class InputState {
+  constructor(canvas) {
+    this.canvas = canvas;
+    this.keys = new Set();
+    this.pressed = new Set();
+    this.pointer = { x: 480, y: 270, down: false, clicked: false };
+    this.onKeyDown = null;
+    this.onPointer = null;
+    window.addEventListener("keydown", (e) => {
+      if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "Space"].includes(e.code)) e.preventDefault();
+      if (!this.keys.has(e.code)) this.pressed.add(e.code);
+      this.keys.add(e.code);
+      this.onKeyDown?.(e.code, e);
+    }, { passive: false });
+    window.addEventListener("keyup", (e) => this.keys.delete(e.code));
+    window.addEventListener("blur", () => this.keys.clear());
+    const update = (e) => {
+      const rect = canvas.getBoundingClientRect();
+      this.pointer.x = clamp((e.clientX - rect.left) / Math.max(1, rect.width) * canvas.width, 0, canvas.width);
+      this.pointer.y = clamp((e.clientY - rect.top) / Math.max(1, rect.height) * canvas.height, 0, canvas.height);
+    };
+    canvas.addEventListener("pointermove", update);
+    canvas.addEventListener("pointerdown", (e) => {
+      update(e);
+      this.pointer.down = true;
+      this.pointer.clicked = true;
+      canvas.setPointerCapture?.(e.pointerId);
+      this.onPointer?.("down", this.pointer, e);
+    });
+    canvas.addEventListener("pointerup", (e) => {
+      update(e);
+      this.pointer.down = false;
+      this.onPointer?.("up", this.pointer, e);
+    });
+  }
+  is(...codes) { return codes.some((c) => this.keys.has(c)); }
+  hit(...codes) { return codes.some((c) => this.pressed.has(c)); }
+  virtualDown(code) {
+    if (!this.keys.has(code)) this.pressed.add(code);
+    this.keys.add(code);
+    this.onKeyDown?.(code, { virtual: true, preventDefault() {} });
+  }
+  virtualUp(code) { this.keys.delete(code); }
+  endFrame() {
+    this.pressed.clear();
+    this.pointer.clicked = false;
+  }
+}
+
+class GameHost {
+  constructor(slug) {
+    this.slug = slug;
+    this.meta = GAME_META[slug];
+    this.audio = new AudioBus();
+    this.paused = false;
+    this.logs = [];
+    this.game = null;
+    this.last = performance.now();
+    this.installShell();
+    this.input = new InputState(this.canvas);
+    this.input.onKeyDown = (code, event) => {
+      this.audio.ensure();
+      if (code === "Escape" && !event.virtual) this.togglePause();
+      this.game?.onKeyDown?.(code, event);
+    };
+    this.input.onPointer = (type, p, event) => {
+      this.audio.ensure();
+      this.game?.onPointer?.(type, p, event);
+    };
+    this.bindGlobalButtons();
+    requestAnimationFrame((t) => this.frame(t));
+  }
+  installShell() {
+    const m = this.meta;
+    document.body.innerHTML = `
+      <div class="app-shell">
+        <header class="topbar">
+          <div class="brand">
+            <div class="brand-kicker">${escapeHtml(m.kicker)}</div>
+            <h1>${escapeHtml(m.title)}</h1>
+            <p class="subtitle">${escapeHtml(m.subtitle)}</p>
+          </div>
+          <div class="top-actions">
+            <a class="btn" href="../">Collection</a>
+            <button class="btn" id="audioBtn">Audio : oui</button>
+            <button class="btn" id="pauseBtn">Pause</button>
+            <button class="btn danger" id="resetBtn">Nouvelle partie</button>
+          </div>
+        </header>
+        <main class="game-layout">
+          <section class="stage-card">
+            <canvas id="gameCanvas" width="960" height="540" tabindex="0" aria-label="Zone de jeu"></canvas>
+            <div class="overlay" id="overlay" hidden><div class="overlay-panel" id="overlayPanel"></div></div>
+            <div class="touch-pad" id="touchPad">
+              <div class="touch-cluster dpad">
+                <span class="touch-spacer"></span><button class="touch-btn" data-key="ArrowUp">▲</button><span class="touch-spacer"></span>
+                <button class="touch-btn" data-key="ArrowLeft">◀</button><span class="touch-spacer"></span><button class="touch-btn" data-key="ArrowRight">▶</button>
+                <span class="touch-spacer"></span><button class="touch-btn" data-key="ArrowDown">▼</button><span class="touch-spacer"></span>
+              </div>
+              <div class="touch-cluster actions">
+                <button class="touch-btn" data-key="KeyE">E</button>
+                <button class="touch-btn" data-key="Space">A</button>
+                <button class="touch-btn" data-key="KeyB">B</button>
+                <button class="touch-btn" data-key="Enter">OK</button>
+              </div>
+            </div>
+          </section>
+          <aside class="side-card">
+            <section class="panel-section">
+              <h2 class="panel-title">État</h2>
+              <div class="status-grid" id="statusGrid"></div>
+            </section>
+            <section class="panel-section">
+              <h2 class="panel-title">Objectif</h2>
+              <div class="objective" id="objective">Initialisation…</div>
+            </section>
+            <section class="panel-section">
+              <h2 class="panel-title">Actions</h2>
+              <div class="action-grid" id="actionGrid"></div>
+            </section>
+            <section class="panel-section" style="min-height:0;display:flex;flex-direction:column">
+              <h2 class="panel-title">Journal</h2>
+              <div class="log" id="log"></div>
+            </section>
+          </aside>
+        </main>
+        <footer class="footer-card">
+          <div class="controls-copy">${escapeHtml(m.controls)}</div>
+          <div class="badges">${m.badges.map((b) => `<span class="badge">${escapeHtml(b)}</span>`).join("")}</div>
+        </footer>
+      </div>`;
+    this.canvas = document.querySelector("#gameCanvas");
+    this.ctx = this.canvas.getContext("2d", { alpha: false });
+    this.overlay = document.querySelector("#overlay");
+    this.overlayPanel = document.querySelector("#overlayPanel");
+    this.statusGrid = document.querySelector("#statusGrid");
+    this.objective = document.querySelector("#objective");
+    this.actionGrid = document.querySelector("#actionGrid");
+    this.logEl = document.querySelector("#log");
+  }
+  bindGlobalButtons() {
+    document.querySelector("#audioBtn").addEventListener("click", (e) => {
+      this.audio.setEnabled(!this.audio.enabled);
+      e.currentTarget.textContent = `Audio : ${this.audio.enabled ? "oui" : "non"}`;
+      if (this.audio.enabled) this.audio.tone(440, .06, "sine", .08);
+    });
+    document.querySelector("#pauseBtn").addEventListener("click", () => this.togglePause());
+    document.querySelector("#resetBtn").addEventListener("click", () => this.confirmReset());
+    document.querySelectorAll(".touch-btn[data-key]").forEach((btn) => {
+      const key = btn.dataset.key;
+      const down = (e) => { e.preventDefault(); btn.classList.add("active"); this.audio.ensure(); this.input.virtualDown(key); };
+      const up = (e) => { e.preventDefault(); btn.classList.remove("active"); this.input.virtualUp(key); };
+      btn.addEventListener("pointerdown", down);
+      btn.addEventListener("pointerup", up);
+      btn.addEventListener("pointercancel", up);
+      btn.addEventListener("pointerleave", (e) => { if (e.buttons) up(e); });
+    });
+  }
+  mount(game) {
+    this.game = game;
+    game.host = this;
+    game.start?.();
+  }
+  frame(now) {
+    const dt = clamp((now - this.last) / 1000, 0, .05);
+    this.last = now;
+    if (!this.paused && this.game && this.overlay.hidden) this.game.update?.(dt);
+    this.game?.render?.(this.ctx);
+    this.input.endFrame();
+    requestAnimationFrame((t) => this.frame(t));
+  }
+  togglePause() {
+    if (!this.overlay.hidden) return;
+    this.paused = !this.paused;
+    document.querySelector("#pauseBtn").textContent = this.paused ? "Reprendre" : "Pause";
+    if (this.paused) {
+      this.showOverlay("Pause", "La partie est suspendue. Les sons et la simulation reprendront lorsque vous fermerez cet écran.", [
+        { label: "Reprendre", primary: true, action: () => { this.hideOverlay(); this.paused = false; document.querySelector("#pauseBtn").textContent = "Pause"; } },
+      ]);
+    }
+  }
+  confirmReset() {
+    this.showOverlay("Nouvelle partie ?", "La progression de cette partie sera remplacée. Les records globaux resteront conservés.", [
+      { label: "Annuler", action: () => this.hideOverlay() },
+      { label: "Recommencer", danger: true, action: () => { this.hideOverlay(); this.game?.reset?.(); } },
+    ]);
+  }
+  showOverlay(title, html, buttons = []) {
+    this.overlayPanel.innerHTML = `<h2 class="overlay-title">${escapeHtml(title)}</h2><div class="overlay-copy">${html}</div><div class="overlay-actions"></div>`;
+    const actions = this.overlayPanel.querySelector(".overlay-actions");
+    buttons.forEach((b) => {
+      const btn = document.createElement("button");
+      btn.className = `btn${b.primary ? " primary" : ""}${b.danger ? " danger" : ""}`;
+      btn.textContent = b.label;
+      btn.addEventListener("click", () => { this.audio.ensure(); b.action?.(); });
+      actions.append(btn);
+    });
+    this.overlay.hidden = false;
+  }
+  hideOverlay() { this.overlay.hidden = true; }
+  setStatus(items) {
+    this.statusGrid.innerHTML = "";
+    for (const item of items) {
+      const el = document.createElement("div");
+      el.className = "status-item";
+      const meter = item.meter == null ? "" : `<div class="meter"><i style="width:${clamp(item.meter,0,100)}%;background:${item.color || "var(--accent)"}"></i></div>`;
+      el.innerHTML = `<div class="status-label">${escapeHtml(item.label)}</div><div class="status-value">${escapeHtml(item.value)}</div>${meter}`;
+      this.statusGrid.append(el);
+    }
+  }
+  setObjective(html) { this.objective.innerHTML = html; }
+  setActions(actions) {
+    this.actionGrid.innerHTML = "";
+    actions.forEach((a) => {
+      const btn = document.createElement("button");
+      btn.className = `btn${a.primary ? " primary" : ""}${a.danger ? " danger" : ""}${a.warning ? " warning" : ""}${a.wide ? " wide" : ""}`;
+      btn.textContent = a.label;
+      btn.disabled = !!a.disabled;
+      btn.addEventListener("click", () => { this.audio.ensure(); a.action?.(); });
+      this.actionGrid.append(btn);
+    });
+  }
+  log(message, kind = "") {
+    this.logs.unshift({ message, kind, at: Date.now() });
+    this.logs = this.logs.slice(0, 35);
+    this.logEl.innerHTML = this.logs.map((l) => `<div class="log-line ${l.kind}">${escapeHtml(l.message)}</div>`).join("");
+  }
+  save(key, data) {
+    try { localStorage.setItem(`aug2.${this.slug}.${key}`, JSON.stringify(data)); } catch {}
+  }
+  load(key, fallback = null) {
+    try {
+      const raw = localStorage.getItem(`aug2.${this.slug}.${key}`);
+      return raw ? JSON.parse(raw) : fallback;
+    } catch { return fallback; }
+  }
+  clearSave(key) { try { localStorage.removeItem(`aug2.${this.slug}.${key}`); } catch {} }
+  shake(amount = 7, duration = 180) {
+    const stage = this.canvas.closest(".stage-card");
+    const start = performance.now();
+    const tick = () => {
+      const p = (performance.now() - start) / duration;
+      if (p >= 1) { stage.style.transform = ""; return; }
+      stage.style.transform = `translate(${rand(-amount, amount) * (1-p)}px, ${rand(-amount, amount) * (1-p)}px)`;
+      requestAnimationFrame(tick);
+    };
+    tick();
+  }
+}
+
+class BaseGame {
+  constructor(host) { this.host = host; this.w = 960; this.h = 540; this.time = 0; }
+  start() {}
+  update(dt) { this.time += dt; }
+  render(ctx) { ctx.fillStyle = "#05070b"; ctx.fillRect(0, 0, this.w, this.h); }
+  reset() {}
+  onKeyDown() {}
+  onPointer() {}
+  vignette(ctx, strength = .55) {
+    const g = ctx.createRadialGradient(this.w/2, this.h/2, 80, this.w/2, this.h/2, this.w*.68);
+    g.addColorStop(0, "rgba(0,0,0,0)");
+    g.addColorStop(1, `rgba(0,0,0,${strength})`);
+    ctx.fillStyle = g;
+    ctx.fillRect(0,0,this.w,this.h);
+  }
+  scanlines(ctx, alpha = .07) {
+    ctx.fillStyle = `rgba(255,255,255,${alpha})`;
+    for (let y=0; y<this.h; y+=4) ctx.fillRect(0,y,this.w,1);
+  }
+}
+
+
+class ArcadeNullGame extends BaseGame {
+  constructor(host) {
+    super(host);
+    this.anomalyNames = [
+      "La rangée B compte une borne supplémentaire.",
+      "Le néon ASTERION est rouge au lieu de cyan.",
+      "L’horloge affiche 03:33 et ne bouge plus.",
+      "Le reflet du couloir ne contient pas la porte.",
+      "La mascotte en carton regarde la caméra.",
+      "La borne VOID//RUNNER est déjà allumée.",
+      "Une silhouette se tient derrière la vitre.",
+      "Le sol quadrillé converge dans le mauvais sens.",
+      "Le tableau des scores porte votre nom avant la partie.",
+    ];
+    this.reset(true);
+  }
+  reset(first = false) {
+    this.mode = "inspection";
+    this.loop = 1;
+    this.rank = 10;
+    this.totalScore = 0;
+    this.stability = 100;
+    this.correct = 0;
+    this.wrong = 0;
+    this.roomSeed = Math.random();
+    this.anomaly = null;
+    this.runner = null;
+    this.ending = null;
+    this.host.logs = [];
+    this.host.logEl.innerHTML = "";
+    this.newRoom();
+    this.syncUI();
+    if (!first) this.host.log("Protocole réinitialisé. La salle vous reconnaît encore.", "warn");
+    this.host.showOverlay(
+      "Règle du protocole",
+      `<p>Chaque boucle commence dans la même salle d’arcade. <strong>Si quelque chose a changé, ressortez.</strong> Si tout est normal, asseyez-vous à la borne VOID//RUNNER et marquez assez de points pour remonter le classement.</p>
+       <p>Une mauvaise décision dégrade la stabilité. Atteignez le <strong>rang n°1</strong> avant qu’elle ne tombe à zéro.</p>`,
+      [{ label: "Entrer dans Asterion Arcade", primary: true, action: () => { this.host.hideOverlay(); this.host.audio.chord([110,165,220], .45, "sawtooth", .1); } }]
+    );
+  }
+  newRoom() {
+    const chance = clamp(.38 + this.loop * .035, .38, .72);
+    this.anomaly = Math.random() < chance ? {
+      text: pick(this.anomalyNames),
+      slot: randi(0, 8),
+      kind: randi(0, 5),
+    } : null;
+    this.roomSeed = Math.random();
+    this.mode = "inspection";
+    this.host.log(`Boucle ${this.loop} : portes verrouillées derrière vous.`);
+  }
+  decide(foundAnomaly) {
+    if (this.mode !== "inspection") return;
+    const correct = foundAnomaly === !!this.anomaly;
+    if (correct) {
+      this.correct++;
+      this.stability = clamp(this.stability + 5, 0, 100);
+      this.host.audio.tone(foundAnomaly ? 180 : 520, .13, foundAnomaly ? "square" : "triangle", .12, 0, foundAnomaly ? -60 : 100);
+      if (foundAnomaly) {
+        this.host.log(`Anomalie confirmée : ${this.anomaly.text}`, "good");
+        this.totalScore += 1300 + this.loop * 150;
+        this.advanceLoop();
+      } else {
+        this.host.log("Salle conforme. VOID//RUNNER accepte votre jeton.", "good");
+        this.startRunner();
+      }
+    } else {
+      this.wrong++;
+      this.stability = clamp(this.stability - 24, 0, 100);
+      this.totalScore = Math.max(0, this.totalScore - 1800);
+      this.host.audio.noise(.42, .16, 0, 700);
+      this.host.shake(13, 320);
+      this.host.log(this.anomaly ? `Erreur : vous avez joué malgré l’anomalie — ${this.anomaly.text}` : "Erreur : vous avez fui une salle parfaitement normale.", "bad");
+      if (this.stability <= 0) this.finish("absorbed");
+      else this.advanceLoop(false);
+    }
+    this.syncUI();
+  }
+  advanceLoop(reward = true) {
+    this.loop++;
+    if (reward) this.totalScore += 450;
+    if (this.loop > 14 && this.rank > 1) this.finish("locked");
+    else setTimeout(() => { if (!this.ending) { this.newRoom(); this.syncUI(); } }, 280);
+  }
+  startRunner() {
+    this.mode = "runner";
+    this.runner = {
+      t: 0,
+      duration: 19 + Math.min(7, this.loop * .7),
+      x: 480,
+      y: 420,
+      vx: 0,
+      vy: 0,
+      score: 0,
+      combo: 0,
+      lives: 3,
+      spawn: 0,
+      stars: Array.from({length: 80}, () => ({x:rand(0,960), y:rand(0,540), s:rand(1,3), v:rand(50,180)})),
+      objects: [],
+      trail: [],
+    };
+    this.host.setObjective(`<strong>VOID//RUNNER :</strong> survivez ${Math.ceil(this.runner.duration)} secondes, ramassez les fragments cyan et évitez les blocs magenta.`);
+    this.host.setActions([
+      { label: "Quitter la borne", danger: true, wide: true, action: () => { this.stability -= 18; this.host.log("Vous avez abandonné la partie. La borne conserve votre reflet.", "bad"); this.advanceLoop(false); } },
+    ]);
+    this.host.audio.chord([220,330,440], .25, "square", .08);
+  }
+  runnerHit(obj) {
+    const r = this.runner;
+    if (obj.type === "coin") {
+      obj.dead = true;
+      r.combo++;
+      const gain = 350 + Math.min(1200, r.combo * 55);
+      r.score += gain;
+      this.host.audio.tone(420 + r.combo * 12, .07, "triangle", .08, 0, 120);
+    } else if (!obj.hit) {
+      obj.hit = true;
+      obj.dead = true;
+      r.lives--;
+      r.combo = 0;
+      r.score = Math.max(0, r.score - 900);
+      this.stability = clamp(this.stability - 7, 0, 100);
+      this.host.audio.noise(.2, .14, 0, 500);
+      this.host.shake(8, 180);
+      if (r.lives <= 0) r.t = r.duration;
+    }
+  }
+  endRunner() {
+    const r = this.runner;
+    const earned = Math.round(r.score + r.lives * 1400 + this.loop * 320);
+    this.totalScore += earned;
+    const improvement = Math.max(1, Math.floor(earned / 6500));
+    const old = this.rank;
+    this.rank = Math.max(1, this.rank - improvement);
+    this.host.log(`VOID//RUNNER : +${fmt(earned)} points. Rang ${old} → ${this.rank}.`, "good");
+    this.mode = "result";
+    if (this.rank === 1) {
+      this.finish(this.stability >= 65 && this.wrong === 0 ? "perfect" : "champion");
+      return;
+    }
+    this.host.showOverlay(
+      `Rang n°${this.rank}`,
+      `<p>Score de la session : <strong>${fmt(earned)}</strong></p><p>La salle se réorganise. Les sorties ne mènent plus tout à fait au même couloir.</p>`,
+      [{ label: "Boucle suivante", primary: true, action: () => { this.host.hideOverlay(); this.advanceLoop(); } }]
+    );
+    this.syncUI();
+  }
+  finish(type) {
+    this.ending = type;
+    this.mode = "ending";
+    const record = this.host.load("record", { score: 0, endings: [] });
+    record.score = Math.max(record.score || 0, this.totalScore);
+    record.endings = [...new Set([...(record.endings || []), type])];
+    this.host.save("record", record);
+    const endings = {
+      perfect: ["FIN S — LE NOM AU SOMMET", "Vous inscrivez le score impossible sans commettre une seule erreur. À l’aube, Asterion Arcade n’existe plus, mais votre nom apparaît sur toutes les bornes éteintes de la ville."],
+      champion: ["FIN A — HIGH SCORE PROTOCOL", "Vous atteignez la première place. La porte s’ouvre sur le matin. Derrière vous, VOID//RUNNER continue de jouer avec un vaisseau qui reproduit chacun de vos mouvements."],
+      locked: ["FIN B — CRÉDITS INFINIS", "Vous avez trop longtemps accepté les boucles. Le classement se remplit de vos propres variantes. La salle vous attribue un numéro de série."],
+      absorbed: ["FIN C — PLAYER TWO", "La stabilité tombe à zéro. Votre reflet traverse la vitre de la borne et prend votre place. Quelqu’un d’autre entrera bientôt."],
+    };
+    const [title, text] = endings[type];
+    this.host.showOverlay(title, `<p>${text}</p><p>Score total : <strong>${fmt(this.totalScore)}</strong> · Boucles : <strong>${this.loop}</strong> · Décisions justes : <strong>${this.correct}</strong></p>`, [
+      { label: "Rejouer", primary: true, action: () => { this.host.hideOverlay(); this.reset(); } },
+      { label: "Collection", action: () => location.href = "../" },
+    ]);
+    this.host.log(title, type === "absorbed" ? "bad" : "good");
+    this.syncUI();
+  }
+  update(dt) {
+    this.time += dt;
+    if (this.mode !== "runner" || !this.runner) return;
+    const r = this.runner;
+    r.t += dt;
+    const input = this.host.input;
+    const ax = (input.is("ArrowRight", "KeyD") ? 1 : 0) - (input.is("ArrowLeft", "KeyA", "KeyQ") ? 1 : 0);
+    const ay = (input.is("ArrowDown", "KeyS") ? 1 : 0) - (input.is("ArrowUp", "KeyW", "KeyZ") ? 1 : 0);
+    r.vx = lerp(r.vx, ax * 350, 1 - Math.pow(.001, dt));
+    r.vy = lerp(r.vy, ay * 300, 1 - Math.pow(.001, dt));
+    r.x = clamp(r.x + r.vx * dt, 40, 920);
+    r.y = clamp(r.y + r.vy * dt, 80, 500);
+    r.trail.push({x:r.x, y:r.y, life:1});
+    if (r.trail.length > 28) r.trail.shift();
+    r.trail.forEach(t => t.life -= dt * 2.7);
+    r.stars.forEach(s => { s.y += s.v * dt; if (s.y > 550) { s.y = -10; s.x = rand(0,960); } });
+    r.spawn -= dt;
+    if (r.spawn <= 0) {
+      r.spawn = clamp(.55 - this.loop * .018, .23, .55);
+      const type = Math.random() < .42 ? "coin" : "hazard";
+      r.objects.push({type, x:rand(35,925), y:-35, vy:rand(130,230) + this.loop*8, r:type === "coin" ? 12 : rand(17,28), rot:rand(0,TAU), dead:false});
+    }
+    for (const o of r.objects) {
+      o.y += o.vy * dt;
+      o.rot += dt * 2.2;
+      if (!o.dead && dist(o.x,o.y,r.x,r.y) < o.r + 15) this.runnerHit(o);
+    }
+    r.objects = r.objects.filter(o => !o.dead && o.y < 590);
+    r.score += dt * (120 + r.combo * 5);
+    if (r.t >= r.duration) this.endRunner();
+    this.syncUI();
+  }
+  syncUI() {
+    const record = this.host.load("record", { score: 0, endings: [] });
+    this.host.setStatus([
+      { label: "Boucle", value: this.loop },
+      { label: "Rang", value: `n°${this.rank}` },
+      { label: "Score", value: fmt(this.totalScore) },
+      { label: "Stabilité", value: `${Math.round(this.stability)} %`, meter: this.stability, color: this.stability < 35 ? "var(--danger)" : "var(--accent)" },
+      { label: "Record", value: fmt(record?.score || 0) },
+      { label: "Fins", value: `${record?.endings?.length || 0}/4` },
+    ]);
+    if (this.mode === "inspection") {
+      this.host.setObjective(`<strong>Inspection :</strong> comparez la salle à votre souvenir. Si elle est normale, jouez. Si elle contient une anomalie, ressortez.`);
+      this.host.setActions([
+        { label: "Jouer à la borne", primary: true, action: () => this.decide(false) },
+        { label: "Sortir : anomalie", warning: true, action: () => this.decide(true) },
+      ]);
+    } else if (this.mode === "runner" && this.runner) {
+      this.host.setObjective(`<strong>VOID//RUNNER :</strong> ${Math.max(0, Math.ceil(this.runner.duration-this.runner.t))} s restantes · ${this.runner.lives} vies · combo ×${Math.max(1,this.runner.combo)}.`);
+    } else if (this.mode === "ending") {
+      this.host.setObjective(`<strong>Protocole terminé.</strong> Une nouvelle partie peut révéler les autres fins.`);
+      this.host.setActions([{ label: "Rejouer", primary: true, wide: true, action: () => this.reset() }]);
+    }
+  }
+  renderRoom(ctx) {
+    const t = this.time;
+    ctx.fillStyle = "#04070d"; ctx.fillRect(0,0,960,540);
+    const grad = ctx.createLinearGradient(0,0,0,540);
+    grad.addColorStop(0,"#121528"); grad.addColorStop(.58,"#070912"); grad.addColorStop(1,"#020307");
+    ctx.fillStyle = grad; ctx.fillRect(0,0,960,540);
+    // ceiling lights
+    for (let i=0;i<7;i++) {
+      const x=90+i*130;
+      const bad = this.anomaly?.kind===1 && i===this.anomaly.slot%7;
+      ctx.fillStyle = bad ? "#ff2f69" : "#59ffe2";
+      ctx.globalAlpha = .22 + Math.sin(t*3+i)*.03;
+      ctx.fillRect(x-48,35,96,5);
+      const g=ctx.createLinearGradient(x,40,x,250); g.addColorStop(0,bad?"rgba(255,47,105,.18)":"rgba(89,255,226,.14)"); g.addColorStop(1,"transparent");
+      ctx.fillStyle=g; ctx.fillRect(x-75,40,150,210);
+    }
+    ctx.globalAlpha=1;
+    // back wall and sign
+    ctx.fillStyle="#0d1020"; ctx.fillRect(90,70,780,185);
+    ctx.strokeStyle="#292f4d"; ctx.lineWidth=3; ctx.strokeRect(90,70,780,185);
+    const signBad=this.anomaly?.kind===2;
+    ctx.font="900 48px ui-monospace, monospace"; ctx.textAlign="center";
+    ctx.shadowBlur=24; ctx.shadowColor=signBad?"#ff3a76":"#65ffe4"; ctx.fillStyle=signBad?"#ff4b83":"#6fffe6";
+    ctx.fillText(signBad?"ASTERIØN":"ASTERION",480,135); ctx.shadowBlur=0;
+    ctx.fillStyle="#67708e"; ctx.font="700 13px ui-monospace, monospace"; ctx.fillText("FAMILY ARCADE · OPEN 10:00 — 02:00",480,160);
+    // cabinets
+    const count=this.anomaly?.kind===0?9:8;
+    for(let i=0;i<count;i++){
+      const x=104+i*(752/Math.max(1,count-1));
+      const y=195+(i%2)*8;
+      ctx.fillStyle=i===4?"#13172c":"#0a0c17"; ctx.fillRect(x-35,y,70,190);
+      ctx.strokeStyle=i===4?"#67ffe6":"#303750"; ctx.lineWidth=i===4?3:2; ctx.strokeRect(x-35,y,70,190);
+      ctx.fillStyle=i===4?"#183a41":"#151a28"; ctx.fillRect(x-27,y+14,54,52);
+      ctx.fillStyle=i===4?"#69ffe4":"#6e7999"; ctx.globalAlpha=.58; ctx.fillRect(x-21,y+20,42,40); ctx.globalAlpha=1;
+      ctx.fillStyle="#242b40"; ctx.fillRect(x-24,y+87,48,5); ctx.fillRect(x-20,y+112,40,40);
+      if(i===4){ctx.fillStyle="#e9ffff";ctx.font="800 10px ui-monospace";ctx.fillText("VOID//RUNNER",x,y+178);}
+    }
+    // floor grid
+    ctx.strokeStyle="rgba(90,255,226,.15)"; ctx.lineWidth=1;
+    for(let y=390;y<560;y+=22){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(960,y);ctx.stroke();}
+    for(let x=-500;x<1460;x+=70){ctx.beginPath();ctx.moveTo(480,260);ctx.lineTo(x,540);ctx.stroke();}
+    // anomaly hints
+    if(this.anomaly){
+      if(this.anomaly.kind===3){
+        ctx.fillStyle="rgba(220,230,255,.14)";ctx.fillRect(735,92,110,150);ctx.strokeStyle="#8790a8";ctx.strokeRect(735,92,110,150);
+        ctx.fillStyle="#03040a";ctx.beginPath();ctx.arc(790,150,21,0,TAU);ctx.fill();ctx.fillRect(773,168,34,62);
+      }
+      if(this.anomaly.kind===4){
+        ctx.fillStyle="#f3d7a3";ctx.fillRect(28,244,62,150);ctx.fillStyle="#2b1829";ctx.beginPath();ctx.arc(59,231,29,0,TAU);ctx.fill();
+        const look=Math.sin(t*1.4)>-.9;ctx.fillStyle="#fff";ctx.beginPath();ctx.arc(look?65:52,226,5,0,TAU);ctx.fill();
+      }
+      if(this.anomaly.kind===5){
+        ctx.font="700 20px ui-monospace";ctx.fillStyle="#ff4d85";ctx.textAlign="left";ctx.fillText("03:33",812,38);
+      }
+    }
+    ctx.textAlign="left";
+    ctx.fillStyle="rgba(0,0,0,.62)";ctx.fillRect(20,462,460,58);
+    ctx.fillStyle="#dce7f5";ctx.font="700 16px ui-monospace";ctx.fillText(`BOUCLE ${String(this.loop).padStart(2,"0")}  //  CLASSEMENT : #${this.rank}`,38,488);
+    ctx.fillStyle="#7f8ba3";ctx.font="12px ui-monospace";ctx.fillText("Regardez les détails. La salle ment rarement deux fois de la même manière.",38,508);
+    this.vignette(ctx,.62);this.scanlines(ctx,.055);
+  }
+  renderRunner(ctx) {
+    const r=this.runner;
+    ctx.fillStyle="#02040b";ctx.fillRect(0,0,960,540);
+    for(const s of r.stars){ctx.fillStyle=`rgba(110,255,232,${.25+s.s*.16})`;ctx.fillRect(s.x,s.y,s.s,s.s*3);}
+    const g=ctx.createLinearGradient(0,0,0,540);g.addColorStop(0,"rgba(40,10,80,.15)");g.addColorStop(1,"rgba(0,255,220,.08)");ctx.fillStyle=g;ctx.fillRect(0,0,960,540);
+    ctx.strokeStyle="rgba(92,255,227,.22)";for(let x=0;x<=960;x+=80){ctx.beginPath();ctx.moveTo(480,270);ctx.lineTo(x,540);ctx.stroke();}
+    for(let y=300;y<560;y+=35){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(960,y);ctx.stroke();}
+    for(const t of r.trail){ctx.globalAlpha=clamp(t.life,0,.65);ctx.fillStyle="#67ffe3";ctx.beginPath();ctx.arc(t.x,t.y,8*Math.max(0,t.life),0,TAU);ctx.fill();}ctx.globalAlpha=1;
+    for(const o of r.objects){
+      ctx.save();ctx.translate(o.x,o.y);ctx.rotate(o.rot);
+      if(o.type==="coin"){
+        ctx.shadowBlur=18;ctx.shadowColor="#6affeb";ctx.strokeStyle="#a8fff2";ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(0,-o.r);ctx.lineTo(o.r,0);ctx.lineTo(0,o.r);ctx.lineTo(-o.r,0);ctx.closePath();ctx.stroke();ctx.shadowBlur=0;
+      } else {
+        ctx.fillStyle="#ff3e82";ctx.shadowBlur=20;ctx.shadowColor="#ff286f";ctx.fillRect(-o.r,-o.r,o.r*2,o.r*2);ctx.fillStyle="#35051a";ctx.fillRect(-o.r*.45,-o.r*.45,o.r*.9,o.r*.9);ctx.shadowBlur=0;
+      }
+      ctx.restore();
+    }
+    ctx.save();ctx.translate(r.x,r.y);ctx.shadowBlur=22;ctx.shadowColor="#68ffe7";ctx.fillStyle="#eaffff";ctx.beginPath();ctx.moveTo(0,-19);ctx.lineTo(15,16);ctx.lineTo(0,10);ctx.lineTo(-15,16);ctx.closePath();ctx.fill();ctx.fillStyle="#ff4b88";ctx.fillRect(-3,10,6,17);ctx.restore();ctx.shadowBlur=0;
+    ctx.fillStyle="rgba(3,5,12,.78)";ctx.fillRect(18,17,330,70);ctx.strokeStyle="rgba(100,255,230,.25)";ctx.strokeRect(18,17,330,70);
+    ctx.fillStyle="#71ffe8";ctx.font="900 20px ui-monospace";ctx.fillText(`VOID//RUNNER  ${fmt(r.score)}`,34,46);
+    ctx.fillStyle="#dce7f5";ctx.font="700 14px ui-monospace";ctx.fillText(`VIES ${"◆".repeat(Math.max(0,r.lives))}   COMBO ×${Math.max(1,r.combo)}   ${Math.max(0,Math.ceil(r.duration-r.t))}s`,34,70);
+    this.vignette(ctx,.45);this.scanlines(ctx,.05);
+  }
+  render(ctx) {
+    if(this.mode==="runner"&&this.runner)this.renderRunner(ctx);else this.renderRoom(ctx);
+    if(this.stability<45){ctx.fillStyle=`rgba(255,30,80,${(45-this.stability)/230*(.65+Math.sin(this.time*11)*.2)})`;ctx.fillRect(0,0,960,540);}
+  }
+}
+
+class LiminalEscapeGame extends BaseGame {
+  constructor(host) {
+    super(host);
+    this.levelDefs = [
+      {
+        name: "NIVEAU 0 — BUREAUX JAUNES",
+        objective: "Retrouvez la carte magnétique et gagnez la porte de maintenance.",
+        colors: { floor: "#9c8b43", wall: "#d8c66c", grid: "#74652c", fog: "rgba(54,45,12,.94)", accent: "#f6ea91" },
+        map: [
+          "########################",
+          "#S.....#....N..........#",
+          "#.###..#.########.####.#",
+          "#...#..#..............##",
+          "###.#..####.######.....#",
+          "#...#.....#.#....#.###.#",
+          "#.#####.#.#.#.R..#...#.#",
+          "#.......#.#.####.###.#.#",
+          "#.#######.#......#...#.#",
+          "#.....B...######.#.###.#",
+          "#####.###........#.....#",
+          "#.....#...########.###.#",
+          "#.#####.#............#.#",
+          "#.......############.#X#",
+          "#......................#",
+          "########################",
+        ],
+        itemName: "Carte magnétique humide",
+        entityName: "La Forme au plafond",
+      },
+      {
+        name: "NIVEAU 37 — STATION INONDÉE",
+        objective: "Trouvez la vanne de coupure, puis ouvrez la rame sans numéro.",
+        colors: { floor: "#244354", wall: "#4f7584", grid: "#172c38", fog: "rgba(4,23,34,.95)", accent: "#79dcff" },
+        map: [
+          "########################",
+          "#S....#.....#..........#",
+          "####..#.###.#.########.#",
+          "#.....#...#.#.#......#.#",
+          "#.#######.#.#.#.####.#.#",
+          "#...B.....#...#....#...#",
+          "#.###############.###..#",
+          "#.#.............#...#..#",
+          "#.#.###########.###.#..#",
+          "#.#.....N.....#.....#..#",
+          "#.###########.#######..#",
+          "#.....#.....#.........##",
+          "#####.#.R...#########..#",
+          "#.....#####...........X#",
+          "#......................#",
+          "########################",
+        ],
+        itemName: "Volant de vanne bleu",
+        entityName: "Le Contrôleur noyé",
+      },
+      {
+        name: "NIVEAU 188 — HÔTEL ROUGE",
+        objective: "Récupérez la clé 808 et rejoignez l’ascenseur qui monte sous terre.",
+        colors: { floor: "#4c1720", wall: "#8a3644", grid: "#2a0b11", fog: "rgba(30,3,7,.96)", accent: "#ff8798" },
+        map: [
+          "########################",
+          "#S......#.......#......#",
+          "#.#####.#.#####.#.####.#",
+          "#.#.....#.#...#.#....#.#",
+          "#.#.#####.#.#.#.####.#.#",
+          "#.#.....B.#.#.#......#.#",
+          "#.#######.#.#.########.#",
+          "#.........#.#..........#",
+          "###########.##########.#",
+          "#.....N.....#..........#",
+          "#.###########.##########",
+          "#.#.........#..........#",
+          "#.#.#######.#.######.#.#",
+          "#...#....R#.........#X.#",
+          "#......................#",
+          "########################",
+        ],
+        itemName: "Clé 808 sans dents",
+        entityName: "Le Client permanent",
+      },
+    ];
+    this.reset(true);
+  }
+  reset(first = false) {
+    this.levelIndex = 0;
+    this.health = 100;
+    this.battery = 100;
+    this.pulseCharge = 35;
+    this.notes = 0;
+    this.hits = 0;
+    this.steps = 0;
+    this.ending = null;
+    this.host.logs = [];
+    this.host.logEl.innerHTML = "";
+    this.loadLevel(0);
+    if (!first) this.host.log("Vous retombez à travers la moquette. Les niveaux ont changé d’ordre.", "warn");
+    this.host.showOverlay(
+      "Liminal Escape",
+      `<p>Vous avez traversé une zone qui n’existait pas sur le plan. La lumière attire parfois les choses, mais l’obscurité les rapproche toujours.</p>
+       <p>Chaque niveau contient un <strong>objet d’ouverture</strong>, une note facultative et une sortie marquée. L’impulsion de lampe repousse brièvement l’entité lorsqu’elle est chargée.</p>`,
+      [{ label: "Se relever", primary: true, action: () => { this.host.hideOverlay(); this.host.audio.noise(.45,.08,0,500); } }]
+    );
+  }
+  loadLevel(index) {
+    this.levelIndex = index;
+    const def = this.levelDefs[index];
+    this.map = def.map.map((row) => row.split(""));
+    let start = {x:1.5,y:1.5};
+    for (let y=0;y<this.map.length;y++) for(let x=0;x<this.map[y].length;x++) if(this.map[y][x]==="S"){start={x:x+.5,y:y+.5};this.map[y][x]=".";}
+    this.px=start.x;this.py=start.y;
+    this.itemFound=false;
+    this.entity={x:this.map[0].length-3.5,y:this.map.length-2.5,stun:2.5,phase:rand(0,TAU)};
+    this.attackCooldown=0;
+    this.levelTime=0;
+    this.host.log(`${def.name}. Le bourdonnement reprend.`);
+    this.syncUI();
+  }
+  tile(x,y){
+    const ix=Math.floor(x),iy=Math.floor(y);
+    if(iy<0||iy>=this.map.length||ix<0||ix>=this.map[0].length)return "#";
+    return this.map[iy][ix];
+  }
+  walkable(x,y,r=.22){
+    return this.tile(x-r,y-r)!=="#"&&this.tile(x+r,y-r)!=="#"&&this.tile(x-r,y+r)!=="#"&&this.tile(x+r,y+r)!=="#";
+  }
+  consumeTile() {
+    const x=Math.floor(this.px),y=Math.floor(this.py),t=this.map[y]?.[x];
+    if(t==="R"){
+      this.map[y][x]=".";this.itemFound=true;
+      this.host.audio.chord([261.6,329.6,392],.35,"triangle",.1);
+      this.host.log(`Objet trouvé : ${this.levelDefs[this.levelIndex].itemName}.`,"good");
+    } else if(t==="B"){
+      this.map[y][x]=".";this.battery=clamp(this.battery+48,0,100);
+      this.host.audio.tone(620,.12,"square",.08,0,120);
+      this.host.log("Pile industrielle récupérée. La lampe cesse de clignoter.","good");
+    } else if(t==="N"){
+      this.map[y][x]=".";this.notes++;
+      this.host.audio.noise(.2,.05,0,1300);this.host.audio.tone(190,.5,"sine",.06);
+      this.host.log(`Note ${this.notes}/3 : « N’utilisez jamais l’ascenseur si vous entendez votre chambre respirer. »`,"warn");
+    } else if(t==="X"){
+      if(!this.itemFound){
+        if(this.exitWarn!==x+","+y){this.exitWarn=x+","+y;this.host.log(`La sortie refuse de s’ouvrir : ${this.levelDefs[this.levelIndex].itemName} manque.`,"bad");}
+      } else if(this.levelIndex<this.levelDefs.length-1){
+        this.host.audio.noise(.6,.12,0,350);
+        this.host.showOverlay("Passage trouvé",`<p>La sortie s’ouvre sur un lieu plus profond. L’air de l’autre côté est ${this.levelIndex===0?"froid et salé":"chaud comme une bouche"}.</p>`,[
+          {label:"Passer au niveau suivant",primary:true,action:()=>{this.host.hideOverlay();this.loadLevel(this.levelIndex+1);}}
+        ]);
+      } else this.finish(this.notes===3?"archive":"escape");
+    }
+    this.syncUI();
+  }
+  pulse() {
+    if(this.pulseCharge<100||this.ending)return;
+    this.pulseCharge=0;
+    const d=dist(this.px,this.py,this.entity.x,this.entity.y);
+    if(d<7){
+      const dx=(this.entity.x-this.px)/Math.max(.01,d),dy=(this.entity.y-this.py)/Math.max(.01,d);
+      let nx=this.entity.x+dx*4,ny=this.entity.y+dy*4;
+      if(this.walkable(nx,this.entity.y,.18))this.entity.x=nx;
+      if(this.walkable(this.entity.x,ny,.18))this.entity.y=ny;
+      this.entity.stun=3.4;
+      this.host.log("Impulsion : l’entité recule hors du faisceau.","good");
+    }else this.host.log("L’impulsion se perd dans les cloisons.","warn");
+    this.host.audio.chord([90,180,360,720],.32,"sawtooth",.14);this.host.shake(7,220);
+    this.syncUI();
+  }
+  finish(type){
+    this.ending=type;
+    const record=this.host.load("record",{endings:[],bestHealth:0});
+    record.endings=[...new Set([...(record.endings||[]),type])];record.bestHealth=Math.max(record.bestHealth||0,Math.round(this.health));
+    this.host.save("record",record);
+    const endings={
+      archive:["FIN S — LE PLAN IMPOSSIBLE","Les trois notes forment un plan lorsqu’elles sont superposées. Vous ne sortez pas seulement : vous ramenez un chemin. À votre retour, un quatrième niveau apparaît au dos de la feuille."],
+      escape:["FIN A — SORTIE DE SERVICE","L’ascenseur descend pendant onze minutes puis s’ouvre sur un parking familier. Votre montre indique que vous avez disparu depuis six secondes."],
+      consumed:["FIN C — OCCUPANT SUPPLÉMENTAIRE","La lumière s’éteint. Quelque chose apprend votre démarche avant de repartir vers l’entrée du niveau."],
+    };
+    const [title,text]=endings[type];
+    this.host.showOverlay(title,`<p>${text}</p><p>Santé : <strong>${Math.round(this.health)} %</strong> · Notes : <strong>${this.notes}/3</strong> · Rencontres : <strong>${this.hits}</strong></p>`,[
+      {label:"Rejouer",primary:true,action:()=>{this.host.hideOverlay();this.reset();}},
+      {label:"Collection",action:()=>location.href="../"},
+    ]);
+    this.host.log(title,type==="consumed"?"bad":"good");this.syncUI();
+  }
+  update(dt){
+    this.time+=dt;if(this.ending)return;
+    this.levelTime+=dt;this.attackCooldown=Math.max(0,this.attackCooldown-dt);
+    const input=this.host.input;
+    if(input.hit("Space"))this.pulse();
+    let dx=(input.is("ArrowRight","KeyD")?1:0)-(input.is("ArrowLeft","KeyA","KeyQ")?1:0);
+    let dy=(input.is("ArrowDown","KeyS")?1:0)-(input.is("ArrowUp","KeyW","KeyZ")?1:0);
+    const len=Math.hypot(dx,dy)||1;dx/=len;dy/=len;
+    const moving=Math.abs(dx)+Math.abs(dy)>0;
+    const speed=2.7*(this.battery<12?.86:1);
+    const nx=this.px+dx*speed*dt,ny=this.py+dy*speed*dt;
+    if(this.walkable(nx,this.py))this.px=nx;
+    if(this.walkable(this.px,ny))this.py=ny;
+    if(moving){this.steps+=dt;this.battery=clamp(this.battery-dt*(.58+this.levelIndex*.16),0,100);}
+    else this.battery=clamp(this.battery-dt*.18,0,100);
+    this.pulseCharge=clamp(this.pulseCharge+dt*(5.4+(!moving?2:0)),0,100);
+    this.consumeTile();
+    const e=this.entity;e.phase+=dt;
+    e.stun=Math.max(0,e.stun-dt);
+    if(e.stun<=0){
+      const d=dist(this.px,this.py,e.x,e.y);
+      let ex=(this.px-e.x)/Math.max(.01,d),ey=(this.py-e.y)/Math.max(.01,d);
+      const speedE=(.72+this.levelIndex*.18+(this.battery<20?.22:0))*(1+Math.sin(e.phase*1.7)*.08);
+      const enx=e.x+ex*speedE*dt,eny=e.y+ey*speedE*dt;
+      if(this.walkable(enx,e.y,.18))e.x=enx;else if(Math.random()<.04)e.y+=rand(-.2,.2);
+      if(this.walkable(e.x,eny,.18))e.y=eny;else if(Math.random()<.04)e.x+=rand(-.2,.2);
+      if(d<.62&&this.attackCooldown<=0){
+        this.attackCooldown=1.3;this.hits++;this.health=clamp(this.health-(16+this.levelIndex*4),0,100);
+        this.battery=clamp(this.battery-10,0,100);e.stun=.8;
+        this.host.audio.noise(.35,.17,0,600);this.host.shake(12,260);this.host.log(`${this.levelDefs[this.levelIndex].entityName} vous touche.`,"bad");
+        if(this.health<=0)this.finish("consumed");
+      }
+    }
+    if(Math.floor(this.time*5)%5===0)this.syncUI();
+  }
+  syncUI(){
+    const def=this.levelDefs[this.levelIndex];
+    const rec=this.host.load("record",{endings:[],bestHealth:0});
+    this.host.setStatus([
+      {label:"Niveau",value:`${this.levelIndex+1}/3`},
+      {label:"Santé",value:`${Math.round(this.health)} %`,meter:this.health,color:this.health<35?"var(--danger)":"var(--good)"},
+      {label:"Batterie",value:`${Math.round(this.battery)} %`,meter:this.battery,color:this.battery<25?"var(--danger)":"var(--warning)"},
+      {label:"Impulsion",value:`${Math.round(this.pulseCharge)} %`,meter:this.pulseCharge},
+      {label:"Objet",value:this.itemFound?"Trouvé":"Manquant"},
+      {label:"Notes",value:`${this.notes}/3`},
+    ]);
+    this.host.setObjective(`<strong>${escapeHtml(def.name)}</strong><br>${escapeHtml(def.objective)}<br><small>${this.itemFound?`Objet acquis : ${escapeHtml(def.itemName)}.`:"Inspectez les salles latérales."}</small>`);
+    this.host.setActions([
+      {label:"Impulsion lampe",primary:this.pulseCharge>=100,disabled:this.pulseCharge<100,wide:true,action:()=>this.pulse()},
+      {label:"Recentrer",action:()=>{this.host.canvas.focus();this.host.log("Vous écoutez le bourdonnement pour vous orienter.");}},
+      {label:`Fins ${rec?.endings?.length||0}/3`,disabled:true},
+    ]);
+  }
+  render(ctx){
+    const def=this.levelDefs[this.levelIndex],cols=this.map[0].length,rows=this.map.length;
+    ctx.fillStyle="#020305";ctx.fillRect(0,0,960,540);
+    const cell=Math.min(30,Math.floor(500/rows));const ox=(960-cols*cell)/2,oy=(540-rows*cell)/2;
+    ctx.save();ctx.translate(ox,oy);
+    for(let y=0;y<rows;y++)for(let x=0;x<cols;x++){
+      const t=this.map[y][x],px=x*cell,py=y*cell;
+      if(t==="#"){
+        ctx.fillStyle=def.colors.wall;ctx.fillRect(px,py,cell,cell);
+        ctx.fillStyle="rgba(0,0,0,.18)";ctx.fillRect(px+3,py+3,cell-6,cell-6);
+        ctx.strokeStyle="rgba(255,255,255,.06)";ctx.strokeRect(px+.5,py+.5,cell-1,cell-1);
+      }else{
+        ctx.fillStyle=def.colors.floor;ctx.fillRect(px,py,cell,cell);
+        ctx.strokeStyle=def.colors.grid;ctx.strokeRect(px+.5,py+.5,cell-1,cell-1);
+        if(this.levelIndex===1){ctx.fillStyle=`rgba(100,205,240,${.08+Math.sin(this.time*2+x+y)*.025})`;ctx.fillRect(px,py+cell*.55,cell,cell*.45);}
+        if(t==="R"){ctx.fillStyle=def.colors.accent;ctx.shadowBlur=12;ctx.shadowColor=def.colors.accent;ctx.fillRect(px+cell*.3,py+cell*.3,cell*.4,cell*.4);ctx.shadowBlur=0;}
+        if(t==="B"){ctx.fillStyle="#d6ff71";ctx.fillRect(px+cell*.35,py+cell*.23,cell*.3,cell*.54);ctx.fillStyle="#243010";ctx.fillRect(px+cell*.42,py+cell*.12,cell*.16,cell*.12);}
+        if(t==="N"){ctx.fillStyle="#eee6d4";ctx.save();ctx.translate(px+cell/2,py+cell/2);ctx.rotate(-.12);ctx.fillRect(-cell*.28,-cell*.2,cell*.56,cell*.4);ctx.restore();}
+        if(t==="X"){ctx.fillStyle=this.itemFound?def.colors.accent:"#25252b";ctx.fillRect(px+cell*.18,py+cell*.05,cell*.64,cell*.9);ctx.fillStyle="#050608";ctx.fillRect(px+cell*.66,py+cell*.48,3,3);}
+      }
+    }
+    const ex=this.entity.x*cell,ey=this.entity.y*cell;
+    const ed=dist(this.px,this.py,this.entity.x,this.entity.y);
+    ctx.globalAlpha=clamp(1-ed/10,.12,.9);ctx.fillStyle="#050308";ctx.shadowBlur=22;ctx.shadowColor=this.levelIndex===2?"#ff244d":"#000";
+    ctx.beginPath();ctx.arc(ex,ey-cell*.18,cell*.31,0,TAU);ctx.fill();ctx.fillRect(ex-cell*.21,ey,cell*.42,cell*.78);
+    ctx.fillStyle=this.levelIndex===0?"#f4f0cf":"#ff6580";ctx.fillRect(ex-cell*.13,ey-cell*.24,4,3);ctx.fillRect(ex+cell*.08,ey-cell*.24,4,3);ctx.shadowBlur=0;ctx.globalAlpha=1;
+    const px=this.px*cell,py=this.py*cell;
+    ctx.fillStyle="#f5fbff";ctx.shadowBlur=15;ctx.shadowColor=def.colors.accent;ctx.beginPath();ctx.arc(px,py,cell*.23,0,TAU);ctx.fill();ctx.shadowBlur=0;
+    // darkness mask
+    ctx.globalCompositeOperation="source-over";
+    const radius=cell*(3.1+this.battery/28);
+    const g=ctx.createRadialGradient(px,py,cell*.5,px,py,radius);
+    g.addColorStop(0,"rgba(0,0,0,0)");g.addColorStop(.55,"rgba(0,0,0,.15)");g.addColorStop(1,def.colors.fog);
+    ctx.fillStyle=g;ctx.fillRect(0,0,cols*cell,rows*cell);
+    ctx.restore();
+    ctx.fillStyle="rgba(2,3,6,.8)";ctx.fillRect(16,16,560,58);ctx.strokeStyle="rgba(255,255,255,.12)";ctx.strokeRect(16,16,560,58);
+    ctx.fillStyle=def.colors.accent;ctx.font="900 18px ui-monospace";ctx.fillText(def.name,30,42);
+    ctx.fillStyle="#b9c3d2";ctx.font="12px ui-monospace";ctx.fillText(`Distance entité : ${ed.toFixed(1)} m · ${this.itemFound?def.itemName:"objet d’ouverture manquant"}`,30,62);
+    if(ed<3.2){ctx.fillStyle=`rgba(255,20,60,${clamp((3.2-ed)/7,0,.38)*(1+Math.sin(this.time*12)*.25)})`;ctx.fillRect(0,0,960,540);}
+    this.vignette(ctx,.58);this.scanlines(ctx,.03);
+  }
+}
+
+class LEnversGame extends BaseGame {
+  constructor(host) {
+    super(host);
+    this.layers = ["RÉEL", "DÉCALAGE", "ENVERS"];
+    this.locations = [
+      {id:"standard",name:"Standard municipal",x:480,y:270,kind:"central"},
+      {id:"hospital",name:"Hôpital Saint-Cyr",x:185,y:130,kind:"hospital"},
+      {id:"school",name:"École des Amandiers",x:760,y:120,kind:"school"},
+      {id:"depot",name:"Dépôt des bus",x:815,y:365,kind:"depot"},
+      {id:"tower",name:"Tour 13",x:170,y:390,kind:"tower"},
+      {id:"river",name:"Passerelle du canal",x:490,y:460,kind:"river"},
+    ];
+    this.interventions = [
+      {title:"L’ascenseur sans étage",caller:"Agent de nuit — Saint-Cyr",target:"hospital",layer:1,item:"Craie de balisage",source:"standard",sourceLayer:0,clue:"L’ascenseur dessert un étage indiqué par un trait horizontal. Une voix demande de ne surtout pas effacer le chiffre.",resolution:"Tracez un cercle autour du bouton absent et ramenez la cabine dans le Réel.",choices:[{label:"Ramener l’infirmier",rescue:1,contam:7},{label:"Condamner la cabine",rescue:0,contam:-4}]},
+      {title:"La comptine sous la classe",caller:"Gardien — École des Amandiers",target:"school",layer:2,item:"Clochette d’appel",source:"hospital",sourceLayer:0,clue:"Des enfants chantent sous le carrelage. Le gardien entend son propre prénom dans le dernier couplet.",resolution:"Faites sonner la clochette sur le contretemps et refusez de compléter la chanson.",choices:[{label:"Extraire le gardien",rescue:1,contam:9},{label:"Fermer l’école",rescue:0,contam:-2}]},
+      {title:"Le bus de 00 h 07",caller:"Régulation réseau",target:"depot",layer:1,item:"Ticket composté",source:"school",sourceLayer:0,clue:"Un bus sans ligne revient au dépôt avec les mêmes passagers endormis. Le compteur affiche moins douze arrêts.",resolution:"Compostez le ticket au dernier arrêt réel et descendez avant l’ouverture des portes arrière.",choices:[{label:"Réveiller les passagers",rescue:2,contam:8},{label:"Dériver le bus",rescue:0,contam:-3}]},
+      {title:"Appartement 13/0",caller:"Habitante — Tour 13",target:"tower",layer:2,item:"Éclat de miroir",source:"tower",sourceLayer:1,clue:"Une porte est apparue entre les appartements 12 et 14. À travers l’œilleton, le couloir regarde en retour.",resolution:"Présentez l’éclat de miroir sans laisser votre reflet franchir le seuil.",choices:[{label:"Faire sortir l’habitante",rescue:1,contam:12},{label:"Murer l’intervalle",rescue:0,contam:-4}]},
+      {title:"Les pas sur l’eau",caller:"Patrouille canal",target:"river",layer:0,item:"Fil de cuivre",source:"depot",sourceLayer:0,clue:"Quelqu’un marche sous la passerelle à la même vitesse que les agents. Les pas continuent lorsqu’ils s’arrêtent.",resolution:"Tendez le fil entre les deux rives et ne regardez pas ce qui remonte avec lui.",choices:[{label:"Tirer le survivant",rescue:1,contam:6},{label:"Couper le fil",rescue:0,contam:-5}]},
+      {title:"L’archive qui respire",caller:"Sous-sol de la mairie",target:"standard",layer:1,item:"Dossier rouge 1963",source:"standard",sourceLayer:0,clue:"Une travée d’archives gagne un mètre toutes les sept minutes. Les dossiers portent les noms des employés présents.",resolution:"Classez le dossier rouge à la date qui n’existe pas et refermez la travée de l’intérieur.",choices:[{label:"Sauver l’archiviste",rescue:1,contam:8},{label:"Brûler l’index",rescue:0,contam:-2}]},
+      {title:"L’enfant au combiné",caller:"Ligne interne 404",target:"school",layer:0,item:"Photo sans visage",source:"hospital",sourceLayer:1,clue:"Un enfant appelle depuis une cabine retirée en 1989. Il affirme que sa mère attend devant l’école.",resolution:"Posez la photographie face cachée et demandez la couleur du ciel avant sa disparition.",choices:[{label:"Guider l’enfant",rescue:1,contam:10},{label:"Rompre la ligne",rescue:0,contam:-3}]},
+      {title:"La porte dans la pluie",caller:"Caméra urbaine 6",target:"river",layer:2,item:"Sel noir",source:"standard",sourceLayer:0,clue:"Une porte tient debout au milieu du canal. Chaque goutte qui la traverse tombe dans une pièce éclairée.",resolution:"Tracez trois seuils de sel et fermez la porte depuis le côté où il ne pleut pas.",choices:[{label:"Récupérer la silhouette",rescue:1,contam:14},{label:"Sceller les deux côtés",rescue:0,contam:-6}]},
+      {title:"Le standard appelle",caller:"Votre propre voix",target:"standard",layer:2,item:"Jeton de service",source:"standard",sourceLayer:1,clue:"Toutes les lignes sonnent ensemble. Sur chacune, votre voix décrit avec quelques secondes d’avance ce que vous allez faire.",resolution:"Insérez le jeton de service dans le téléphone central et choisissez quelle voix restera de garde.",choices:[{label:"Répondre en votre nom",rescue:1,contam:18},{label:"Laisser l’Envers répondre",rescue:0,contam:-8}]},
+    ];
+    this.reset(true);
+  }
+  reset(first=false){
+    this.index=0;this.layer=0;this.currentLocation="standard";this.inventory=new Set(["Sel noir","Fil de cuivre"]);
+    this.examined=false;this.resolved=0;this.rescue=0;this.contamination=4;this.fatigue=0;this.minutes=7;this.ending=null;
+    this.seenLayers=new Set([0]);this.callAnswered=true;this.pendingChoice=false;this.actionPulse=0;
+    this.host.logs=[];this.host.logEl.innerHTML="";
+    this.host.log("00:07 — Prise de service. Six secteurs répondent au réseau.");
+    this.host.log(`Appel prioritaire : ${this.current.title}.`,"warn");
+    this.syncUI();
+    this.host.showOverlay("Consigne de nuit",`<p>Le territoire possède trois états superposés : le <strong>Réel</strong>, le <strong>Décalage</strong> et l’<strong>Envers</strong>. Chaque intervention exige le bon lieu, la bonne couche et un objet précis.</p><p>Inspectez les lieux sources pour récupérer les outils manquants. Chaque déplacement et erreur fait avancer l’heure et la contamination.</p>`,[
+      {label:"Ouvrir la première ligne",primary:true,action:()=>{this.host.hideOverlay();this.host.audio.tone(310,.12,"sine",.1);}}
+    ]);
+    if(!first)this.host.log("Le combiné sonne avant même d’être reposé.","warn");
+  }
+  get current(){return this.interventions[this.index]||this.interventions.at(-1);}
+  location(id){return this.locations.find(l=>l.id===id);}
+  addTime(min, fatigue=1){
+    this.minutes+=min;this.fatigue=clamp(this.fatigue+fatigue,0,100);
+    this.contamination=clamp(this.contamination+(this.layer===2?min*.16:this.layer===1?min*.05:0),0,100);
+    if(this.contamination>=100&&!this.ending)this.finish("operator");
+    if(this.minutes>=360&&this.resolved<9&&!this.ending)this.finish("operator");
+  }
+  selectLocation(id){
+    if(this.ending||this.pendingChoice)return;
+    if(this.currentLocation===id)return;
+    const from=this.location(this.currentLocation),to=this.location(id);
+    const travel=Math.round(dist(from.x,from.y,to.x,to.y)/55)+3;
+    this.currentLocation=id;this.examined=false;this.addTime(travel,travel*.35);this.actionPulse=1;
+    this.host.audio.tone(120+this.layer*50,.08,"triangle",.05);
+    this.host.log(`${this.clock()} — Arrivée : ${to.name}.`);
+    this.syncUI();
+  }
+  cycleLayer(direction=1){
+    if(this.ending||this.pendingChoice)return;
+    this.layer=(this.layer+direction+3)%3;this.seenLayers.add(this.layer);this.examined=false;this.addTime(3,2+this.layer);
+    this.actionPulse=1;this.host.audio.noise(.24,.07,0,700-this.layer*150);this.host.audio.tone(90+this.layer*45,.34,"sine",.06);
+    this.host.log(`${this.clock()} — Passage vers ${this.layers[this.layer]}.`,this.layer===2?"warn":"");
+    this.syncUI();
+  }
+  inspect(){
+    if(this.ending||this.pendingChoice)return;
+    const c=this.current;this.addTime(5,3);this.examined=true;this.actionPulse=1;
+    if(this.currentLocation===c.source&&this.layer===c.sourceLayer&&!this.inventory.has(c.item)){
+      this.inventory.add(c.item);this.host.audio.chord([260,390,520],.28,"triangle",.09);
+      this.host.log(`Objet récupéré : ${c.item}.`,"good");
+    }else if(this.currentLocation===c.target&&this.layer===c.layer){
+      this.host.audio.noise(.2,.05,0,1000);
+      this.host.log(`Anomalie localisée : ${c.clue}`,"warn");
+    }else{
+      const wrongLayer=this.currentLocation===c.target&&this.layer!==c.layer;
+      this.contamination=clamp(this.contamination+(wrongLayer?8:2),0,100);
+      this.host.audio.tone(145,.13,"sawtooth",.07,0,-40);
+      this.host.log(wrongLayer?"Le lieu est juste, mais la couche ne correspond pas à l’appel.":"Rien d’utile ici. Un téléphone sonne derrière un mur sans pièce.",wrongLayer?"bad":"");
+    }
+    this.syncUI();
+  }
+  useItem(){
+    if(this.ending||this.pendingChoice)return;
+    const c=this.current;
+    if(this.currentLocation!==c.target||this.layer!==c.layer){
+      this.contamination=clamp(this.contamination+6,0,100);this.addTime(4,3);this.host.log("L’outil réagit au mauvais environnement et se couvre de givre.","bad");this.host.audio.noise(.25,.09,0,450);this.syncUI();return;
+    }
+    if(!this.inventory.has(c.item)){
+      this.host.log(`Objet requis manquant : ${c.item}. Source probable : ${this.location(c.source).name}, couche ${this.layers[c.sourceLayer]}.`,"warn");this.host.audio.tone(110,.2,"square",.06);return;
+    }
+    this.addTime(8,6);this.examined=true;this.pendingChoice=true;this.host.audio.chord([130,195,260,390],.46,"sawtooth",.09);this.actionPulse=1;
+    this.host.log(c.resolution,"good");
+    this.host.showOverlay(c.title,`<p>${c.resolution}</p><p>L’intervention peut être refermée de deux façons. Le choix modifie les personnes ramenées et la quantité d’Envers qui vous suit.</p>`,c.choices.map((choice,i)=>({
+      label:choice.label,primary:i===0,action:()=>{this.host.hideOverlay();this.resolve(choice);}
+    })));
+  }
+  resolve(choice){
+    const c=this.current;this.rescue+=choice.rescue;this.contamination=clamp(this.contamination+choice.contam,0,100);this.resolved++;this.pendingChoice=false;
+    this.host.log(`Intervention close : ${choice.label}.`,choice.rescue?"good":"warn");
+    this.inventory.delete(c.item);
+    if(this.resolved>=this.interventions.length){
+      const type=this.contamination>=72?"operator":this.rescue>=8&&this.contamination<42?"dawn":this.rescue<=2?"quiet":"service";
+      this.finish(type);return;
+    }
+    this.index++;this.currentLocation="standard";this.layer=0;this.examined=false;this.addTime(6,2);
+    this.host.log(`${this.clock()} — Nouvel appel : ${this.current.title}.`,"warn");
+    this.syncUI();
+  }
+  clock(){const total=this.minutes;const h=Math.floor(total/60)%24,m=Math.floor(total%60);return `${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}`;}
+  finish(type){
+    this.ending=type;const rec=this.host.load("record",{endings:[],bestRescue:0});rec.endings=[...new Set([...(rec.endings||[]),type])];rec.bestRescue=Math.max(rec.bestRescue||0,this.rescue);this.host.save("record",rec);
+    const endings={
+      dawn:["FIN S — L’AUBE RESTE EN PLACE","Vous ramenez presque tous les appelants et refermez les neuf points sans offrir votre nom à l’Envers. À 06:01, le soleil se lève exactement à l’endroit prévu."],
+      service:["FIN A — SERVICE TERMINÉ","Le jour arrive. Les rapports paraissent ordinaires à ceux qui ne savent pas lire entre les lignes. Dans le tiroir, un dixième dossier attend déjà la prochaine nuit."],
+      quiet:["FIN B — VILLE SILENCIEUSE","Vous avez privilégié les scellements. La ville est intacte, mais plusieurs habitants n’ont jamais existé dans les registres du matin."],
+      operator:["FIN C — NOUVEL OPÉRATEUR","La contamination vous dépasse. Votre voix reste dans toutes les lignes tandis que votre corps quitte le standard. Le prochain agent vous entendra donner les consignes."],
+    };
+    const [title,text]=endings[type];this.host.showOverlay(title,`<p>${text}</p><p>Interventions : <strong>${this.resolved}/9</strong> · Personnes ramenées : <strong>${this.rescue}</strong> · Contamination : <strong>${Math.round(this.contamination)} %</strong></p>`,[
+      {label:"Reprendre le service",primary:true,action:()=>{this.host.hideOverlay();this.reset();}},
+      {label:"Collection",action:()=>location.href="../"},
+    ]);this.host.log(title,type==="operator"?"bad":"good");this.syncUI();
+  }
+  syncUI(){
+    const c=this.current,loc=this.location(this.currentLocation),rec=this.host.load("record",{endings:[],bestRescue:0});
+    this.host.setStatus([
+      {label:"Heure",value:this.clock()},
+      {label:"Intervention",value:`${Math.min(this.index+1,9)}/9`},
+      {label:"Couche",value:this.layers[this.layer]},
+      {label:"Lieu",value:loc.name},
+      {label:"Contamination",value:`${Math.round(this.contamination)} %`,meter:this.contamination,color:this.contamination>65?"var(--danger)":"var(--accent-2)"},
+      {label:"Ramenés",value:this.rescue},
+      {label:"Inventaire",value:this.inventory.size?Array.from(this.inventory).join(" · "):"Vide"},
+      {label:"Fins",value:`${rec?.endings?.length||0}/4`},
+    ]);
+    this.host.setObjective(`<strong>${escapeHtml(c.title)}</strong><br>${escapeHtml(c.clue)}<br><small>Cible : ${escapeHtml(this.location(c.target).name)} · couche ${this.layers[c.layer]} · outil ${escapeHtml(c.item)}.</small>`);
+    this.host.setActions([
+      {label:`Couche : ${this.layers[this.layer]}`,warning:this.layer===2,wide:true,action:()=>this.cycleLayer(1)},
+      {label:"Inspecter",primary:true,action:()=>this.inspect()},
+      {label:`Utiliser ${c.item}`,disabled:!this.inventory.has(c.item),action:()=>this.useItem()},
+      {label:`Source : ${this.location(c.source).name}`,wide:true,action:()=>this.selectLocation(c.source)},
+    ]);
+  }
+  onPointer(type,p){
+    if(type!=="down"||this.ending||this.pendingChoice)return;
+    for(const l of this.locations)if(dist(p.x,p.y,l.x,l.y)<43){this.selectLocation(l.id);break;}
+  }
+  onKeyDown(code){
+    if(code==="KeyE")this.inspect();if(code==="Space")this.useItem();if(code==="KeyB")this.cycleLayer(1);
+  }
+  update(dt){this.time+=dt;this.actionPulse=Math.max(0,this.actionPulse-dt*2.5);}
+  render(ctx){
+    const layer=this.layer,c=this.current;
+    const palettes=[
+      {bg:"#081019",road:"#152333",line:"#344a61",node:"#5cc2dc",text:"#dcebf4"},
+      {bg:"#110d20",road:"#2a2144",line:"#725fa5",node:"#a68bff",text:"#eee7ff"},
+      {bg:"#15050a",road:"#310a18",line:"#7a1736",node:"#ff4e76",text:"#ffe4eb"},
+    ];
+    const p=palettes[layer];ctx.fillStyle=p.bg;ctx.fillRect(0,0,960,540);
+    // city texture
+    ctx.fillStyle=layer===0?"rgba(255,255,255,.025)":layer===1?"rgba(166,139,255,.035)":"rgba(255,30,80,.04)";
+    for(let i=0;i<80;i++){const x=(i*137)%960,y=(i*73)%540,w=30+(i%5)*12,h=18+(i%7)*9;ctx.fillRect(x,y,w,h);}
+    // Roads to center
+    const center=this.location("standard");ctx.lineCap="round";
+    for(const l of this.locations){if(l.id==="standard")continue;ctx.strokeStyle=p.road;ctx.lineWidth=30;ctx.beginPath();ctx.moveTo(center.x,center.y);ctx.quadraticCurveTo((center.x+l.x)/2+(l.y-center.y)*.12,(center.y+l.y)/2+(center.x-l.x)*.09,l.x,l.y);ctx.stroke();ctx.strokeStyle=p.line;ctx.lineWidth=2;ctx.setLineDash([10,10]);ctx.stroke();ctx.setLineDash([]);}
+    // Envers veins
+    if(layer===2){ctx.strokeStyle="rgba(255,45,95,.22)";ctx.lineWidth=2;for(let i=0;i<20;i++){ctx.beginPath();ctx.moveTo(rand(0,960),rand(0,540));for(let j=0;j<4;j++)ctx.lineTo(rand(0,960),rand(0,540));ctx.stroke();}}
+    // Nodes
+    for(const l of this.locations){
+      const current=l.id===this.currentLocation,target=l.id===c.target,source=l.id===c.source&&!this.inventory.has(c.item);
+      const pulse=1+Math.sin(this.time*3+l.x)*.07;ctx.save();ctx.translate(l.x,l.y);ctx.scale(pulse,pulse);
+      ctx.fillStyle=current?"#f3f8ff":target?"#ffca64":source?"#6fffe0":p.node;ctx.shadowBlur=current||target?24:10;ctx.shadowColor=ctx.fillStyle;
+      ctx.beginPath();ctx.arc(0,0,current?26:20,0,TAU);ctx.fill();ctx.shadowBlur=0;
+      ctx.fillStyle=p.bg;ctx.beginPath();ctx.arc(0,0,current?12:9,0,TAU);ctx.fill();ctx.restore();
+      ctx.fillStyle=p.text;ctx.font=`${current?800:650} 13px ui-sans-serif`;ctx.textAlign="center";ctx.fillText(l.name,l.x,l.y+44);
+      if(target){ctx.fillStyle="#ffca64";ctx.font="900 11px ui-monospace";ctx.fillText("APPEL",l.x,l.y-32);}
+      if(source){ctx.fillStyle="#77ffe4";ctx.font="900 10px ui-monospace";ctx.fillText("OUTIL",l.x,l.y-32);}
+    }
+    ctx.textAlign="left";
+    // Layer ghost imagery
+    if(layer===1){ctx.globalAlpha=.18;ctx.strokeStyle="#d3caff";ctx.lineWidth=2;for(const l of this.locations){ctx.strokeRect(l.x-36+Math.sin(this.time+l.x)*6,l.y-36,72,72);}ctx.globalAlpha=1;}
+    if(layer===2){
+      const loc=this.location(c.target);ctx.globalAlpha=this.currentLocation===c.target?.65:.18;ctx.fillStyle="#030104";ctx.beginPath();ctx.arc(loc.x,loc.y-50,22,0,TAU);ctx.fill();ctx.fillRect(loc.x-14,loc.y-28,28,85);ctx.fillStyle="#ff315e";ctx.fillRect(loc.x-9,loc.y-55,5,3);ctx.fillRect(loc.x+5,loc.y-55,5,3);ctx.globalAlpha=1;
+    }
+    // HUD card
+    ctx.fillStyle="rgba(3,5,9,.84)";ctx.fillRect(20,18,475,80);ctx.strokeStyle="rgba(255,255,255,.13)";ctx.strokeRect(20,18,475,80);
+    ctx.fillStyle=p.node;ctx.font="900 18px ui-monospace";ctx.fillText(`${this.clock()} // ${this.layers[layer]}`,36,46);
+    ctx.fillStyle="#f0f3fa";ctx.font="800 15px ui-sans-serif";ctx.fillText(c.title,36,70);
+    ctx.fillStyle="#a9b2c1";ctx.font="12px ui-sans-serif";ctx.fillText(`Cliquez un secteur · cible ${this.location(c.target).name}`,36,89);
+    ctx.fillStyle="rgba(3,5,9,.82)";ctx.fillRect(680,455,260,62);ctx.fillStyle="#aeb8c9";ctx.font="12px ui-monospace";ctx.fillText(`CONTAMINATION ${Math.round(this.contamination)}%`,700,480);ctx.fillText(`RAMENÉS ${this.rescue}  //  DOSSIERS ${this.resolved}/9`,700,500);
+    if(this.actionPulse>0){ctx.fillStyle=`rgba(${layer===2?"255,30,80":"140,110,255"},${this.actionPulse*.13})`;ctx.fillRect(0,0,960,540);}
+    this.vignette(ctx,layer===2?.72:.48);this.scanlines(ctx,layer===2?.05:.025);
+  }
+}
+
+class KidzTVGame extends BaseGame {
+  constructor(host) {
+    super(host);
+    this.map = [
+      "1111111111111111",
+      "1000001000000001",
+      "1011101011110101",
+      "1010001000010101",
+      "1010111111010101",
+      "1000100001010001",
+      "1110101101011101",
+      "1000101001000001",
+      "1011101011110101",
+      "1000001000010101",
+      "1011111111010101",
+      "1010000000010001",
+      "1010111111111101",
+      "1000000000000001",
+      "1001110111010001",
+      "1111111111111111",
+    ];
+    this.relayTemplate = [
+      {x:4.5,y:1.5,name:"Relais Plateau A"},
+      {x:13.5,y:3.5,name:"Relais Régie"},
+      {x:2.5,y:11.5,name:"Relais Accessoires"},
+      {x:12.5,y:13.5,name:"Relais Générique"},
+    ];
+    this.mascotTemplate = [
+      {x:11.5,y:1.5,name:"Bibi Bobine",policy:"off",speed:.72,color:"#ffcc57",face:"bobine"},
+      {x:8.5,y:9.5,name:"Momo Mire",policy:"on",speed:.66,color:"#67e8ff",face:"mire"},
+      {x:4.5,y:13.5,name:"Capitaine Clap",policy:"always",speed:.52,color:"#ff6a98",face:"clap"},
+    ];
+    this.exit = {x:13.5,y:14.5};
+    this.reset(true);
+  }
+  reset(first=false) {
+    this.p = {x:2.5,y:1.5,a:0};
+    this.onAir = false;
+    this.health = 100;
+    this.signal = 100;
+    this.relays = this.relayTemplate.map((r)=>({...r,on:false}));
+    this.mascots = this.mascotTemplate.map((m)=>({...m,stun:0,phase:Math.random()*TAU}));
+    this.ending = false;
+    this.flash = 0;
+    this.broadcastPulse = 0;
+    this.stepClock = 0;
+    this.host.logs=[];this.host.logEl.innerHTML="";
+    this.host.log("00:14 — le Studio Mirliton redémarre sans alimentation.","warn");
+    this.syncUI();
+    this.host.showOverlay("Bienvenue après la fermeture",`<p>Le studio jeunesse Mirliton a cessé d’émettre en 1996. Pourtant, quatre relais viennent de se rallumer. Restaurez-les, puis rejoignez la porte de service.</p><p><strong>À l’antenne</strong>, Momo vous repère. <strong>Hors antenne</strong>, Bibi se déplace. Capitaine Clap n’obéit à aucun état.</p>`,[
+      {label:"Entrer dans le studio",primary:true,action:()=>{this.host.hideOverlay();this.host.audio.chord([196,247,294],.45,"triangle",.09);}}
+    ]);
+    if(!first)this.host.log("Le magnétoscope rembobine la nuit.","warn");
+  }
+  cell(x,y){const gx=Math.floor(x),gy=Math.floor(y);return gy<0||gx<0||gy>=this.map.length||gx>=this.map[0].length?"1":this.map[gy][gx];}
+  free(x,y){return this.cell(x,y)==="0";}
+  moveEntity(entity,nx,ny){
+    const radius=.18;
+    if(this.free(nx+Math.sign(nx-entity.x)*radius,entity.y))entity.x=nx;
+    if(this.free(entity.x,ny+Math.sign(ny-entity.y)*radius))entity.y=ny;
+  }
+  toggleBroadcast(){
+    if(this.ending)return;
+    this.onAir=!this.onAir;this.broadcastPulse=1;
+    this.host.audio.chord(this.onAir?[262,330,392]:[196,147,98],.22,this.onAir?"triangle":"sawtooth",.08);
+    this.host.log(this.onAir?"ENSEIGNE ROUGE : À L’ANTENNE.":"Les écrans perdent l’image. Hors antenne.",this.onAir?"warn":"good");
+    for(const m of this.mascots)if((m.policy==="on"&&!this.onAir)||(m.policy==="off"&&this.onAir))m.stun=Math.max(m.stun,.75);
+    this.syncUI();
+  }
+  interact(){
+    if(this.ending)return;
+    let nearest=null,best=1.05;
+    for(const r of this.relays){const d=dist(this.p.x,this.p.y,r.x,r.y);if(d<best){best=d;nearest=r;}}
+    if(nearest&&!nearest.on){
+      nearest.on=true;this.flash=1;this.signal=clamp(this.signal+18,0,100);
+      this.host.audio.chord([110,220,440,660],.38,"square",.12);
+      this.host.log(`${nearest.name} restauré. Une voix d’enfant compte à rebours.`,"good");
+      if(this.relays.every(r=>r.on))this.host.log("Les quatre relais répondent. La porte de service est déverrouillée.","good");
+      this.syncUI();return;
+    }
+    if(this.relays.every(r=>r.on)&&dist(this.p.x,this.p.y,this.exit.x,this.exit.y)<1.05){
+      const type=this.health>70&&this.signal>45?"clean":this.health>25?"archive":"broadcast";this.finish(type);return;
+    }
+    this.host.log("Seulement une odeur de poussière chaude et de mousse de décor.");
+  }
+  finish(type){
+    if(this.ending)return;this.ending=true;
+    const endings={
+      clean:["FIN A — COUPURE PROPRE","Vous sortez avant le générique. À 06:00, le Studio Mirliton est de nouveau vide, sauf une cassette étiquetée à votre nom."],
+      archive:["FIN B — L’ARCHIVE VIVANTE","Vous emportez la dernière émission. À chaque lecture, les mascottes se rapprochent d’un plan supplémentaire."],
+      broadcast:["FIN C — NOUVEAU PRÉSENTATEUR","La porte s’ouvre sur le plateau. Le voyant rouge s’allume et votre sourire apparaît dans tous les téléviseurs éteints de la ville."],
+    };
+    const [title,text]=endings[type];const rec=this.host.load("record",{endings:[]});if(!rec.endings.includes(type))rec.endings.push(type);this.host.save("record",rec);
+    this.host.showOverlay(title,`<p>${text}</p><p>Relais : <strong>${this.relays.filter(r=>r.on).length}/4</strong> · Intégrité : <strong>${Math.round(this.health)} %</strong> · Signal : <strong>${Math.round(this.signal)} %</strong></p>`,[
+      {label:"Rembobiner",primary:true,action:()=>{this.host.hideOverlay();this.reset();}},
+      {label:"Collection",action:()=>location.href="../"},
+    ]);this.host.log(title,type==="clean"?"good":"bad");this.syncUI();
+  }
+  nearestThreat(){let best=null,bd=999;for(const m of this.mascots){const d=dist(this.p.x,this.p.y,m.x,m.y);if(d<bd){bd=d;best=m;}}return {m:best,d:bd};}
+  syncUI(){
+    const active=this.mascots.filter(m=>m.policy==="always"||(m.policy==="on"&&this.onAir)||(m.policy==="off"&&!this.onAir)).length;
+    const rec=this.host.load("record",{endings:[]});
+    this.host.setStatus([
+      {label:"Diffusion",value:this.onAir?"À L’ANTENNE":"HORS ANTENNE"},
+      {label:"Relais",value:`${this.relays.filter(r=>r.on).length}/4`},
+      {label:"Intégrité",value:`${Math.round(this.health)} %`,meter:this.health,color:this.health<35?"var(--danger)":"var(--good)"},
+      {label:"Signal",value:`${Math.round(this.signal)} %`,meter:this.signal,color:this.signal<30?"var(--danger)":"var(--accent)"},
+      {label:"Mascottes actives",value:active},
+      {label:"Fins",value:`${rec.endings?.length||0}/3`},
+    ]);
+    const next=this.relays.find(r=>!r.on);
+    this.host.setObjective(next?`Restaurez les <strong>quatre relais</strong>. Prochain circuit encore muet : ${escapeHtml(next.name)}.`:`Tous les relais sont actifs. Rejoignez la <strong>porte de service verte</strong> au sud-est.`);
+    this.host.setActions([
+      {label:this.onAir?"Passer hors antenne":"Passer à l’antenne",warning:this.onAir,wide:true,action:()=>this.toggleBroadcast()},
+      {label:"Interagir / relais",primary:true,action:()=>this.interact()},
+      {label:"Impulsion de mire",disabled:this.signal<25,action:()=>this.pulse()},
+    ]);
+  }
+  pulse(){
+    if(this.signal<25||this.ending)return;this.signal-=25;this.flash=1;
+    for(const m of this.mascots)if(dist(this.p.x,this.p.y,m.x,m.y)<4.2)m.stun=2.3;
+    this.host.audio.noise(.26,.14,0,2800);this.host.audio.tone(880,.2,"square",.1,0,-500);this.host.log("La mire blanche repousse les imposteurs proches.","good");this.syncUI();
+  }
+  onKeyDown(code){if(code==="KeyE")this.interact();if(code==="KeyB")this.toggleBroadcast();if(code==="Space")this.pulse();}
+  onPointer(type){if(type==="down")this.host.canvas.focus();}
+  update(dt){
+    this.time+=dt;if(this.ending)return;
+    const inp=this.host.input;let forward=0,turn=0,strafe=0;
+    if(inp.is("KeyW","KeyZ","ArrowUp"))forward+=1;if(inp.is("KeyS","ArrowDown"))forward-=1;
+    if(inp.is("ArrowLeft"))turn-=1;if(inp.is("ArrowRight"))turn+=1;
+    if(inp.is("KeyA","KeyQ"))strafe-=1;if(inp.is("KeyD"))strafe+=1;
+    this.p.a=(this.p.a+turn*dt*2.25+TAU)%TAU;
+    const speed=2.18*dt;const dx=(Math.cos(this.p.a)*forward+Math.cos(this.p.a+Math.PI/2)*strafe)*speed;const dy=(Math.sin(this.p.a)*forward+Math.sin(this.p.a+Math.PI/2)*strafe)*speed;
+    if(dx||dy){this.moveEntity(this.p,this.p.x+dx,this.p.y+dy);this.stepClock+=dt;if(this.stepClock>.35){this.stepClock=0;this.host.audio.tone(58,.035,"triangle",.025);}}
+    this.signal=clamp(this.signal-(this.onAir?.92:.22)*dt,0,100);
+    if(this.signal<=0){this.onAir=false;this.signal=8;this.health=clamp(this.health-6,0,100);this.host.log("Perte de synchro : la régie vous arrache quelques secondes.","bad");}
+    for(const m of this.mascots){
+      m.stun=Math.max(0,m.stun-dt);m.phase+=dt;
+      const active=m.policy==="always"||(m.policy==="on"&&this.onAir)||(m.policy==="off"&&!this.onAir);
+      if(active&&m.stun<=0){
+        const d=dist(m.x,m.y,this.p.x,this.p.y);const vx=(this.p.x-m.x)/(d||1),vy=(this.p.y-m.y)/(d||1);
+        this.moveEntity(m,m.x+vx*m.speed*dt,m.y+vy*m.speed*dt);
+        if(d<.62){this.health=clamp(this.health-22*dt,0,100);this.flash=Math.max(this.flash,.28);if(Math.random()<dt*2)this.host.audio.noise(.08,.06,0,600);}
+      }
+    }
+    if(this.health<=0)this.finish("broadcast");
+    this.flash=Math.max(0,this.flash-dt*2.4);this.broadcastPulse=Math.max(0,this.broadcastPulse-dt*2.2);
+    if(Math.floor(this.time*4)!==Math.floor((this.time-dt)*4))this.syncUI();
+  }
+  castRay(angle){
+    const rayDirX=Math.cos(angle),rayDirY=Math.sin(angle);let mapX=Math.floor(this.p.x),mapY=Math.floor(this.p.y);
+    const deltaX=Math.abs(1/(rayDirX||.00001)),deltaY=Math.abs(1/(rayDirY||.00001));let sideX,sideY,stepX,stepY;
+    if(rayDirX<0){stepX=-1;sideX=(this.p.x-mapX)*deltaX;}else{stepX=1;sideX=(mapX+1-this.p.x)*deltaX;}
+    if(rayDirY<0){stepY=-1;sideY=(this.p.y-mapY)*deltaY;}else{stepY=1;sideY=(mapY+1-this.p.y)*deltaY;}
+    let side=0,guard=0;
+    while(guard++<64){if(sideX<sideY){sideX+=deltaX;mapX+=stepX;side=0;}else{sideY+=deltaY;mapY+=stepY;side=1;}if(this.map[mapY]?.[mapX]!=="0")break;}
+    const d=side===0?(mapX-this.p.x+(1-stepX)/2)/(rayDirX||.00001):(mapY-this.p.y+(1-stepY)/2)/(rayDirY||.00001);
+    return {d:Math.max(.05,Math.abs(d)),side,mapX,mapY};
+  }
+  angleDelta(a,b){return Math.atan2(Math.sin(a-b),Math.cos(a-b));}
+  drawSprite(ctx,s,depths,fov){
+    const dx=s.x-this.p.x,dy=s.y-this.p.y,d=Math.hypot(dx,dy);const delta=this.angleDelta(Math.atan2(dy,dx),this.p.a);
+    if(Math.abs(delta)>fov*.68||d<.15)return;const sx=480+(delta/(fov/2))*480;const size=clamp(520/d,24,360);const column=clamp(Math.floor(sx/2),0,depths.length-1);if(depths[column]<d-.35)return;
+    ctx.save();ctx.translate(sx,270+size*.12);ctx.globalAlpha=clamp(1-d/18,.35,1);
+    if(s.kind==="relay"){
+      ctx.fillStyle=s.on?"#76ffd6":"#4d5766";ctx.shadowBlur=s.on?24:0;ctx.shadowColor="#76ffd6";ctx.fillRect(-size*.18,-size*.42,size*.36,size*.72);ctx.shadowBlur=0;ctx.fillStyle=s.on?"#dffff5":"#ff525f";ctx.fillRect(-size*.11,-size*.32,size*.22,size*.1);ctx.fillStyle="#111722";ctx.font=`900 ${Math.max(9,size*.07)}px ui-monospace`;ctx.textAlign="center";ctx.fillText(s.on?"SYNC":"OFF",0,-size*.24);
+    } else if(s.kind==="exit"){
+      ctx.fillStyle="#0b301f";ctx.shadowBlur=24;ctx.shadowColor="#44ff9a";ctx.fillRect(-size*.25,-size*.5,size*.5,size);ctx.shadowBlur=0;ctx.fillStyle="#66ffad";ctx.fillRect(-size*.18,-size*.42,size*.36,size*.08);ctx.fillStyle="#d8ffea";ctx.font=`900 ${Math.max(10,size*.08)}px ui-monospace`;ctx.textAlign="center";ctx.fillText("SORTIE",0,-size*.31);
+    } else {
+      const m=s;ctx.fillStyle="rgba(0,0,0,.35)";ctx.beginPath();ctx.ellipse(0,size*.42,size*.28,size*.09,0,0,TAU);ctx.fill();
+      ctx.fillStyle=m.color;ctx.shadowBlur=m.stun>0?24:10;ctx.shadowColor=m.color;ctx.beginPath();ctx.arc(0,-size*.16,size*.23,0,TAU);ctx.fill();ctx.fillRect(-size*.18,size*.02,size*.36,size*.38);ctx.shadowBlur=0;
+      ctx.fillStyle="#101018";ctx.beginPath();ctx.arc(-size*.075,-size*.19,size*.026,0,TAU);ctx.arc(size*.075,-size*.19,size*.026,0,TAU);ctx.fill();ctx.strokeStyle="#101018";ctx.lineWidth=Math.max(2,size*.018);ctx.beginPath();ctx.arc(0,-size*.1,size*.085,.1*Math.PI,.9*Math.PI);ctx.stroke();
+      if(m.face==="bobine"){ctx.strokeStyle="#fff5c2";ctx.lineWidth=Math.max(2,size*.025);ctx.beginPath();ctx.arc(0,-size*.16,size*.15,0,TAU);ctx.stroke();}
+      if(m.face==="mire"){ctx.strokeStyle="#e8fcff";ctx.lineWidth=Math.max(1,size*.015);ctx.beginPath();ctx.moveTo(-size*.2,-size*.16);ctx.lineTo(size*.2,-size*.16);ctx.moveTo(0,-size*.36);ctx.lineTo(0,size*.04);ctx.stroke();}
+      if(m.face==="clap"){ctx.fillStyle="#111";ctx.fillRect(-size*.2,-size*.42,size*.4,size*.07);for(let i=0;i<5;i++){ctx.fillStyle=i%2?"#fff":"#111";ctx.fillRect(-size*.2+i*size*.08,-size*.42,size*.08,size*.07);}}
+      if(m.stun>0){ctx.fillStyle="#fff";ctx.font=`900 ${Math.max(12,size*.12)}px ui-monospace`;ctx.textAlign="center";ctx.fillText("PAUSE",0,size*.18);}
+    }
+    ctx.restore();
+  }
+  render(ctx){
+    const fov=Math.PI*.39;ctx.fillStyle=this.onAir?"#151026":"#080b12";ctx.fillRect(0,0,960,270);ctx.fillStyle=this.onAir?"#2a1734":"#14151c";ctx.fillRect(0,270,960,270);
+    const depths=[];for(let x=0;x<960;x+=2){const a=this.p.a-fov/2+(x/960)*fov;const hit=this.castRay(a);const corrected=hit.d*Math.cos(a-this.p.a);depths.push(corrected);const h=clamp(520/corrected,12,700);const y=270-h/2;const hue=this.onAir?(hit.side?315:330):(hit.side?202:214);const light=clamp(62-corrected*4,13,52);ctx.fillStyle=`hsl(${hue} 32% ${light}%)`;ctx.fillRect(x,y,2,h);ctx.fillStyle=`rgba(255,255,255,${clamp(.045-corrected*.002,0,.04)})`;ctx.fillRect(x,y,1,h);}
+    // floor stripes and ceiling rig
+    ctx.strokeStyle=this.onAir?"rgba(255,76,140,.16)":"rgba(75,220,255,.08)";ctx.lineWidth=1;for(let i=1;i<10;i++){const y=270+270*(1-1/(i*.42+1));ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(960,y);ctx.stroke();}
+    const sprites=[...this.relays.map(r=>({...r,kind:"relay"})),{...this.exit,kind:"exit"},...this.mascots.map(m=>({...m,kind:"mascot"}))].sort((a,b)=>dist(this.p.x,this.p.y,b.x,b.y)-dist(this.p.x,this.p.y,a.x,a.y));
+    for(const s of sprites)this.drawSprite(ctx,s,depths,fov);
+    // Broadcast frame
+    ctx.fillStyle="rgba(2,3,7,.76)";ctx.fillRect(20,18,370,70);ctx.strokeStyle=this.onAir?"#ff4f89":"#56d6ee";ctx.strokeRect(20,18,370,70);ctx.fillStyle=this.onAir?"#ff6d9b":"#65e6ff";ctx.font="900 20px ui-monospace";ctx.fillText(this.onAir?"● À L’ANTENNE":"○ HORS ANTENNE",36,47);ctx.fillStyle="#eef3f8";ctx.font="700 13px ui-sans-serif";ctx.fillText(`Relais ${this.relays.filter(r=>r.on).length}/4 · Porte ${this.relays.every(r=>r.on)?"OUVERTE":"VERROUILLÉE"}`,36,72);
+    const {m,d}=this.nearestThreat();ctx.fillStyle="rgba(2,3,7,.72)";ctx.fillRect(688,18,252,62);ctx.fillStyle=d<2?"#ff6574":"#b8c7d8";ctx.font="800 13px ui-monospace";ctx.fillText(`PROCHE : ${m?.name||"—"}`,704,44);ctx.fillText(`${d.toFixed(1)} m`,704,64);
+    if(this.broadcastPulse>0){ctx.fillStyle=`rgba(${this.onAir?"255,40,100":"70,210,255"},${this.broadcastPulse*.12})`;ctx.fillRect(0,0,960,540);}
+    if(this.flash>0){ctx.fillStyle=`rgba(255,255,255,${this.flash*.42})`;ctx.fillRect(0,0,960,540);}
+    this.vignette(ctx,.58);this.scanlines(ctx,this.onAir?.055:.025);
+  }
+}
+
+class NocturneDeadFrequencyGame extends BaseGame {
+  constructor(host){
+    super(host);
+    this.transmissions=[
+      {name:"I — Porteuse morte",bpm:92,duration:36,seed:3,color:"#65e3ff",voice:"Une fréquence vide répète votre respiration avec deux secondes d’avance."},
+      {name:"II — Sous la station",bpm:108,duration:40,seed:7,color:"#a878ff",voice:"Le signal descend sous le béton. Quelque chose frappe depuis le dessous des mesures."},
+      {name:"III — Le chœur sans bouche",bpm:126,duration:46,seed:11,color:"#ff4d79",voice:"Quatre voix cherchent une cinquième. Ne leur donnez pas la vôtre."},
+    ];
+    this.laneKeys=["KeyD","KeyF","KeyJ","KeyK"];
+    this.laneLabels=["D","F","J","K"];
+    this.laneColors=["#52e5ff","#7dffbe","#ffc761","#ff6ea7"];
+    this.reset(true);
+  }
+  reset(first=false){
+    this.chapter=0;this.campaignScore=0;this.totalHits=0;this.totalNotes=0;this.feedbackUses=0;this.ending=false;this.songActive=false;
+    this.host.logs=[];this.host.logEl.innerHTML="";this.host.log("Récepteur 87.9 : aucune station enregistrée.","warn");
+    this.prepareTransmission();this.syncUI();
+    this.host.showOverlay("NOCTURNE: Dead Frequency",`<p>Maintenez le signal pendant trois transmissions. Frappez les quatre voies lorsqu’elles atteignent la ligne blanche.</p><p>Les erreurs nourrissent la <strong>Proximité</strong>. Les réussites chargent le <strong>Feedback</strong> : déclenchez-le avec Espace à 100 %.</p>`,[
+      {label:"Ouvrir la fréquence",primary:true,action:()=>{this.host.hideOverlay();this.beginSong();}}
+    ]);
+    if(!first)this.host.log("La bande est revenue au début, mais le souffle se souvient.","warn");
+  }
+  prepareTransmission(){
+    const t=this.transmissions[this.chapter];this.songTime=0;this.duration=t.duration;this.stability=100;this.proximity=12+this.chapter*5;this.feedback=0;this.combo=0;this.maxCombo=0;this.score=0;this.hits=0;this.misses=0;this.perfect=0;this.good=0;this.flashLane=-1;this.flash=0;this.attackFlash=0;this.lastBeat=-1;this.songActive=false;this.notes=[];
+    const beat=60/t.bpm;let index=0;
+    for(let time=2.2;time<t.duration-1.2;time+=beat,index++){
+      const lane=(index*t.seed+Math.floor(index/5)+this.chapter)%4;
+      this.notes.push({t:time,lane,hit:false,miss:false,type:index%13===10?"pulse":"note"});
+      if(this.chapter>=1&&index%8===6)this.notes.push({t:time,lane:(lane+2)%4,hit:false,miss:false,type:"chord"});
+      if(this.chapter===2&&index%11===7)this.notes.push({t:time+beat*.5,lane:(lane+1)%4,hit:false,miss:false,type:"echo"});
+    }
+    this.totalNotes+=this.notes.length;
+  }
+  beginSong(){this.songActive=true;this.host.audio.chord([55,82.4,110],.65,"sawtooth",.09);this.host.log(`${this.transmissions[this.chapter].name} engagée.`,"good");this.syncUI();}
+  hitLane(lane){
+    if(!this.songActive||this.ending)return;
+    const window=.19;let best=null,bestDelta=999;
+    for(const n of this.notes){if(n.lane!==lane||n.hit||n.miss)continue;const d=Math.abs(n.t-this.songTime);if(d<bestDelta){bestDelta=d;best=n;}}
+    this.flashLane=lane;this.flash=.35;
+    if(best&&bestDelta<=window){
+      best.hit=true;this.hits++;this.totalHits++;this.combo++;this.maxCombo=Math.max(this.maxCombo,this.combo);this.feedback=clamp(this.feedback+4.5+this.combo*.035,0,100);this.proximity=clamp(this.proximity-(bestDelta<.075?2.4:1.1),0,100);this.stability=clamp(this.stability+.35,0,100);
+      let judge,mult;if(bestDelta<=.055){judge="PARFAIT";mult=1.35;this.perfect++;}else if(bestDelta<=.115){judge="EXCELLENT";mult=1;}else{judge="BON";mult=.68;this.good++;}
+      const gain=Math.round((850+this.combo*22)*(1+this.chapter*.25)*mult);this.score+=gain;this.campaignScore+=gain;
+      const f=[261.63,329.63,392,523.25][lane]*(1+this.chapter*.08);this.host.audio.tone(f,.1,best.type==="pulse"?"square":"triangle",.105,0,best.type==="echo"?-70:55);
+      if(this.combo%10===0)this.host.log(`${this.combo} notes — le signal vous obéit.`,"good");
+      this.lastJudge={text:judge,life:.55,lane};
+    } else {
+      this.combo=0;this.misses++;this.proximity=clamp(this.proximity+5.5,0,100);this.stability=clamp(this.stability-3.2,0,100);this.host.audio.noise(.07,.045,0,950);this.lastJudge={text:"HORS SIGNAL",life:.55,lane};
+    }
+    this.syncUI();
+  }
+  triggerFeedback(){
+    if(!this.songActive||this.feedback<99.5||this.ending)return;this.feedback=0;this.feedbackUses++;this.proximity=clamp(this.proximity-48,0,100);this.stability=clamp(this.stability+9,0,100);this.attackFlash=1;
+    this.host.audio.chord([110,220,330,440,660],.48,"sawtooth",.16);this.host.log("FEEDBACK : la présence est rejetée derrière la porteuse.","good");this.syncUI();
+  }
+  missNote(n){n.miss=true;this.misses++;this.combo=0;this.proximity=clamp(this.proximity+(n.type==="pulse"?12:8),0,100);this.stability=clamp(this.stability-(n.type==="pulse"?8:5.5),0,100);this.lastJudge={text:"RATÉ",life:.55,lane:n.lane};this.host.audio.noise(.1,.055,0,650);}
+  onKeyDown(code){const i=this.laneKeys.indexOf(code);if(i>=0)this.hitLane(i);if(code==="Space")this.triggerFeedback();}
+  update(dt){
+    this.time+=dt;if(!this.songActive||this.ending)return;this.songTime+=dt;const t=this.transmissions[this.chapter];
+    const beatDur=60/t.bpm;const beat=Math.floor(this.songTime/beatDur);if(beat!==this.lastBeat){this.lastBeat=beat;const down=beat%4===0;this.host.audio.tone(down?55:82.4,down?.09:.045,down?"sine":"triangle",down?.075:.035);if(beat%2===1)this.host.audio.noise(.035,.02,0,2400);}
+    for(const n of this.notes)if(!n.hit&&!n.miss&&n.t<this.songTime-.19)this.missNote(n);
+    this.proximity=clamp(this.proximity+(.52+this.chapter*.22)*dt,0,105);
+    if(this.proximity>=100){this.proximity=56;this.stability=clamp(this.stability-(13+this.chapter*3),0,100);this.attackFlash=1;this.host.shake(9,260);this.host.audio.noise(.32,.16,0,430);this.host.log("La silhouette traverse la fréquence.","bad");}
+    this.flash=Math.max(0,this.flash-dt*2.5);this.attackFlash=Math.max(0,this.attackFlash-dt*1.7);if(this.lastJudge)this.lastJudge.life-=dt;
+    if(this.stability<=0){this.songActive=false;this.failTransmission();return;}
+    if(this.songTime>=this.duration){this.songActive=false;this.completeTransmission();return;}
+    if(Math.floor(this.songTime*4)!==Math.floor((this.songTime-dt)*4))this.syncUI();
+  }
+  failTransmission(){
+    this.host.showOverlay("SIGNAL PERDU",`<p>La présence atteint le récepteur pendant ${escapeHtml(this.transmissions[this.chapter].name)}. La campagne n’est pas effacée : vous pouvez reprendre cette transmission.</p><p>Score de la tentative : <strong>${fmt(this.score)}</strong> · Combo max : <strong>${this.maxCombo}</strong></p>`,[
+      {label:"Réaccorder",primary:true,action:()=>{this.host.hideOverlay();this.prepareTransmission();this.beginSong();}},
+      {label:"Recommencer la campagne",danger:true,action:()=>{this.host.hideOverlay();this.reset();}},
+    ]);this.host.log("Transmission interrompue. Quelque chose continue pourtant de chanter.","bad");this.syncUI();
+  }
+  completeTransmission(){
+    const accuracy=this.notes.length?Math.round(this.hits/this.notes.length*100):0;const bonus=Math.round(this.stability*70+accuracy*55);this.score+=bonus;this.campaignScore+=bonus;
+    if(this.chapter<this.transmissions.length-1){
+      const old=this.chapter;this.host.showOverlay("TRANSMISSION TENUE",`<p>${escapeHtml(this.transmissions[old].voice)}</p><p>Précision : <strong>${accuracy} %</strong> · Stabilité : <strong>${Math.round(this.stability)} %</strong> · Bonus : <strong>${fmt(bonus)}</strong></p>`,[
+        {label:"Transmission suivante",primary:true,action:()=>{this.host.hideOverlay();this.chapter++;this.prepareTransmission();this.beginSong();}}
+      ]);this.host.log(`${this.transmissions[old].name} stabilisée.`,"good");
+    } else this.finishCampaign(accuracy);
+    this.syncUI();
+  }
+  finishCampaign(lastAccuracy){
+    this.ending=true;const overall=this.totalNotes?this.totalHits/this.totalNotes*100:0;let type="survive";if(overall>=84&&this.feedbackUses>=3&&this.stability>=45)type="silence";else if(this.stability<28||lastAccuracy<55)type="voice";
+    const endings={
+      silence:["FIN A — SILENCE ABSOLU","Vous inversez la porteuse. Pour la première fois depuis des décennies, 87.9 ne diffuse rien — pas même votre respiration."],
+      survive:["FIN B — AUBE PARASITÉE","La station tient jusqu’au matin. Le signal disparaît, mais chaque radio croisée sur le trajet joue une mesure de votre score."],
+      voice:["FIN C — CINQUIÈME VOIX","Le chœur se tait quand vous quittez la cabine. Plus tard, l’enregistrement révèle une cinquième piste qui prononce votre nom."],
+    };const [title,text]=endings[type];const rec=this.host.load("record",{best:0,endings:[]});rec.best=Math.max(rec.best||0,this.campaignScore);if(!rec.endings.includes(type))rec.endings.push(type);this.host.save("record",rec);
+    this.host.showOverlay(title,`<p>${text}</p><p>Score campagne : <strong>${fmt(this.campaignScore)}</strong> · Précision globale : <strong>${Math.round(overall)} %</strong> · Feedbacks : <strong>${this.feedbackUses}</strong></p>`,[
+      {label:"Rejouer",primary:true,action:()=>{this.host.hideOverlay();this.reset();}},
+      {label:"Collection",action:()=>location.href="../"},
+    ]);this.host.log(title,type==="silence"?"good":"warn");this.syncUI();
+  }
+  syncUI(){
+    const tr=this.transmissions[this.chapter];const rec=this.host.load("record",{best:0,endings:[]});const accuracy=this.notes?.length?Math.round(this.hits/Math.max(1,this.hits+this.misses)*100):100;
+    this.host.setStatus([
+      {label:"Transmission",value:`${this.chapter+1}/3`},
+      {label:"Score",value:fmt(this.campaignScore)},
+      {label:"Combo",value:`×${this.combo}`},
+      {label:"Précision",value:`${accuracy} %`},
+      {label:"Stabilité",value:`${Math.round(this.stability)} %`,meter:this.stability,color:this.stability<30?"var(--danger)":"var(--good)"},
+      {label:"Proximité",value:`${Math.round(this.proximity)} %`,meter:this.proximity,color:this.proximity>70?"var(--danger)":tr.color},
+      {label:"Feedback",value:`${Math.round(this.feedback)} %`,meter:this.feedback,color:"var(--accent-2)"},
+      {label:"Record",value:fmt(rec.best||0)},
+      {label:"Fins",value:`${rec.endings?.length||0}/3`},
+    ]);
+    this.host.setObjective(`<strong>${escapeHtml(tr.name)}</strong><br>${escapeHtml(tr.voice)}<br><small>Frappez D F J K sur la ligne blanche. Espace à 100 % de Feedback.</small>`);
+    this.host.setActions([
+      ...this.laneLabels.map((label,i)=>({label:`${label} · voie ${i+1}`,primary:i===0,action:()=>this.hitLane(i)})),
+      {label:"FEEDBACK",warning:true,wide:true,disabled:this.feedback<99.5,action:()=>this.triggerFeedback()},
+    ]);
+  }
+  render(ctx){
+    const tr=this.transmissions[this.chapter];ctx.fillStyle="#05040a";ctx.fillRect(0,0,960,540);
+    const pulse=.5+.5*Math.sin(this.songTime*(tr.bpm/60)*TAU);const centerX=480,centerY=230;
+    // spectral room
+    const g=ctx.createRadialGradient(centerX,centerY,20,centerX,centerY,450);g.addColorStop(0,`${tr.color}22`);g.addColorStop(.45,"#0c0914");g.addColorStop(1,"#030306");ctx.fillStyle=g;ctx.fillRect(0,0,960,540);
+    ctx.save();ctx.translate(centerX,225);ctx.globalAlpha=clamp(this.proximity/100*.75,.08,.75);ctx.fillStyle="#010103";ctx.beginPath();ctx.ellipse(0,-58,50+this.proximity*.18,74+this.proximity*.2,0,0,TAU);ctx.fill();ctx.fillRect(-42-this.proximity*.12,0,84+this.proximity*.24,175);ctx.fillStyle=tr.color;ctx.globalAlpha=.4+.45*pulse;ctx.fillRect(-22-this.proximity*.06,-74,10,4);ctx.fillRect(12+this.proximity*.06,-74,10,4);ctx.restore();
+    // frequency bands
+    ctx.strokeStyle=`${tr.color}33`;ctx.lineWidth=1;for(let j=0;j<8;j++){ctx.beginPath();for(let x=0;x<=960;x+=12){const y=125+j*34+Math.sin(x*.018+this.songTime*(1.5+j*.06)+j)*12*(.4+this.proximity/100);if(x===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);}ctx.stroke();}
+    const left=150,laneW=165,hitY=455,speed=205;
+    for(let i=0;i<4;i++){
+      const x=left+i*laneW;ctx.fillStyle=i%2?"rgba(255,255,255,.025)":"rgba(255,255,255,.045)";ctx.fillRect(x,70,laneW-8,410);ctx.strokeStyle=`${this.laneColors[i]}55`;ctx.strokeRect(x,70,laneW-8,410);
+      if(this.flashLane===i&&this.flash>0){ctx.fillStyle=`${this.laneColors[i]}${Math.round(this.flash*170).toString(16).padStart(2,"0")}`;ctx.fillRect(x,70,laneW-8,410);}
+      ctx.fillStyle=this.laneColors[i];ctx.font="900 22px ui-monospace";ctx.textAlign="center";ctx.fillText(this.laneLabels[i],x+(laneW-8)/2,510);
+    }
+    ctx.fillStyle="#fff";ctx.shadowBlur=18;ctx.shadowColor="#fff";ctx.fillRect(left-8,hitY,4*laneW-8,4);ctx.shadowBlur=0;
+    for(const n of this.notes){if(n.hit||n.miss)continue;const y=hitY-(n.t-this.songTime)*speed;if(y<-40||y>510)continue;const x=left+n.lane*laneW+(laneW-8)/2;const size=n.type==="pulse"?25:18;ctx.fillStyle=this.laneColors[n.lane];ctx.shadowBlur=n.type==="pulse"?25:12;ctx.shadowColor=ctx.fillStyle;ctx.beginPath();if(n.type==="pulse"){ctx.arc(x,y,size,0,TAU);}else{ctx.roundRect(x-size,y-11,size*2,22,7);}ctx.fill();ctx.shadowBlur=0;if(n.type==="chord"){ctx.strokeStyle="#fff";ctx.lineWidth=2;ctx.stroke();}}
+    ctx.textAlign="left";ctx.fillStyle="rgba(2,2,6,.86)";ctx.fillRect(20,18,440,76);ctx.strokeStyle=tr.color;ctx.strokeRect(20,18,440,76);ctx.fillStyle=tr.color;ctx.font="900 17px ui-monospace";ctx.fillText(tr.name,36,46);ctx.fillStyle="#f4eefc";ctx.font="800 13px ui-sans-serif";ctx.fillText(`TEMPO ${tr.bpm} · ${Math.max(0,Math.ceil(this.duration-this.songTime))} s · COMBO ${this.combo}`,36,72);
+    if(this.lastJudge&&this.lastJudge.life>0){ctx.save();ctx.globalAlpha=clamp(this.lastJudge.life*2,0,1);ctx.fillStyle=this.lastJudge.text==="PARFAIT"?"#fff":this.lastJudge.text==="RATÉ"?"#ff4f67":this.laneColors[this.lastJudge.lane];ctx.font="900 24px ui-monospace";ctx.textAlign="center";ctx.fillText(this.lastJudge.text,480,135-this.lastJudge.life*12);ctx.restore();}
+    if(this.attackFlash>0){ctx.fillStyle=`rgba(255,25,70,${this.attackFlash*.22})`;ctx.fillRect(0,0,960,540);}
+    this.vignette(ctx,.62);this.scanlines(ctx,.035);
+  }
+}
+
+class ChordOfDreadGame extends BaseGame {
+  constructor(host){
+    super(host);
+    this.keys=["KeyA","KeyS","KeyD","KeyF"];
+    this.labels=["A","S","D","F"];
+    this.colors=["#65e7ff","#79ffb2","#ffd15c","#ff628d"];
+    this.bpm=118;this.beatDur=60/this.bpm;
+    this.reset(true);
+  }
+  reset(first=false){
+    this.songTime=0;this.health=100;this.dread=8;this.charge=0;this.combo=0;this.maxCombo=0;this.score=0;this.accurate=0;this.attempts=0;this.lastHitBeat=-99;this.lastProcessedBeat=-1;this.lastSpawnBeat=-5;this.boss={hp:360,max:360,x:0,z:7,phase:1,flash:0,attack:0};this.enemies=[];this.projectiles=[];this.ending=false;this.active=false;this.flash=0;this.lastJudge=null;this.phaseBanner=2.8;this.host.logs=[];this.host.logEl.innerHTML="";this.host.log("La nef accorde ses quatre cordes sur votre pouls.","warn");this.syncUI();
+    this.host.showOverlay("CHORD OF DREAD — Prototype 2",`<p>Armez un accord en frappant la corde demandée sur chaque pulsation. À <strong>100 %</strong>, visez une silhouette et tirez.</p><p>Le Chef de chœur possède <strong>trois phases</strong>. Les tirs imprécis et les pulsations manquées augmentent l’Effroi.</p>`,[
+      {label:"Entrer dans la nef",primary:true,action:()=>{this.host.hideOverlay();this.active=true;this.host.audio.chord([73.4,110,146.8,220],.6,"sawtooth",.12);}}
+    ]);if(!first)this.host.log("Le concert recommence au premier temps.","warn");
+  }
+  expectedLane(beat){return ((beat*3)+Math.floor(beat/4)+this.boss.phase)%4;}
+  currentBeat(){return this.songTime/this.beatDur;}
+  hitString(lane){
+    if(!this.active||this.ending)return;const pos=this.currentBeat();const nearest=Math.round(pos);const delta=Math.abs(pos-nearest)*this.beatDur;const expected=this.expectedLane(nearest);this.attempts++;this.flash=1;
+    if(delta<=.17&&lane===expected&&nearest!==this.lastHitBeat){
+      this.lastHitBeat=nearest;this.accurate++;this.combo++;this.maxCombo=Math.max(this.maxCombo,this.combo);const perfect=delta<=.065;this.charge=clamp(this.charge+(perfect?29:24),0,100);this.dread=clamp(this.dread-(perfect?2.6:1.4),0,100);const points=Math.round((perfect?1250:850)*(1+this.combo*.035)*this.boss.phase);this.score+=points;this.lastJudge={text:perfect?"ACCORD PARFAIT":"ACCORD",life:.55,lane};
+      const roots=[110,138.6,164.8,196];this.host.audio.chord([roots[lane],roots[lane]*1.5,roots[lane]*2],.13,perfect?"triangle":"square",.105);
+      if(this.charge>=99.5)this.host.log("ACCORD ARMÉ — visez et tirez.","good");
+    } else {
+      this.combo=0;this.charge=clamp(this.charge-12,0,100);this.dread=clamp(this.dread+5.5,0,100);this.lastJudge={text:lane!==expected?"MAUVAISE CORDE":"HORS TEMPO",life:.55,lane};this.host.audio.noise(.08,.05,0,780);
+    }this.syncUI();
+  }
+  projected(entity){const z=Math.max(.25,entity.z);return {x:480+entity.x/z*390,y:292+(1/z)*90,size:clamp((entity.type==="boss"?310:145)/z,18,entity.type==="boss"?220:120)};}
+  shoot(){
+    if(!this.active||this.ending)return;if(this.charge<99.5){this.host.log("L’accord n’est pas armé.","warn");this.dread=clamp(this.dread+1.5,0,100);this.syncUI();return;}
+    this.charge=0;const p=this.host.input.pointer;let targets=[...this.enemies.map(e=>({...e,ref:e})),{...this.boss,type:"boss",ref:this.boss}];targets=targets.filter(t=>t.hp>0).map(t=>({...t,screen:this.projected(t)})).filter(t=>dist(p.x,p.y,t.screen.x,t.screen.y)<t.screen.size*.72).sort((a,b)=>a.z-b.z);
+    const target=targets[0];this.host.audio.noise(.1,.13,0,2200);this.host.audio.tone(74,.24,"sawtooth",.16,0,240);this.flash=1;this.projectiles.push({x:p.x,y:p.y,life:.24});
+    if(target){
+      const damage=Math.round(30+Math.min(28,this.combo*.8));target.ref.hp-=damage;target.ref.flash=1;this.score+=damage*(target.type==="boss"?85:38);this.host.log(`${target.type==="boss"?"Chef de chœur":target.ref.name} touché : ${damage} dégâts.`,"good");
+      if(target.type!=="boss"&&target.ref.hp<=0){this.score+=1200;this.enemies=this.enemies.filter(e=>e!==target.ref);this.dread=clamp(this.dread-5,0,100);}
+      if(this.boss.hp<=0){this.finish();return;}
+      this.updateBossPhase();
+    } else {this.dread=clamp(this.dread+8,0,100);this.combo=0;this.host.log("Le tir se perd dans la nef. Le chœur applaudit.","bad");}
+    this.syncUI();
+  }
+  updateBossPhase(){
+    const ratio=this.boss.hp/this.boss.max;const phase=ratio>2/3?1:ratio>1/3?2:3;if(phase!==this.boss.phase){this.boss.phase=phase;this.boss.z=7.4;this.phaseBanner=2.8;this.dread=clamp(this.dread+10,0,100);this.enemies=[];this.host.shake(13,420);this.host.audio.chord(phase===2?[73,110,155,220]:[55,82,123,185],.65,"sawtooth",.18);this.host.log(`PHASE ${phase} — le Chef de chœur change de mesure.`,"warn");}
+  }
+  spawnEnemy(beat){
+    const phase=this.boss.phase;const kind=(beat+phase)%5===0?"cantor":"shade";this.enemies.push({x:rand(-4.2,4.2),z:rand(6.6,9.2),hp:kind==="cantor"?60:42,max:kind==="cantor"?60:42,name:kind==="cantor"?"Cantor aveugle":"Silhouette chorale",type:kind,flash:0,wobble:rand(0,TAU),speed:(kind==="cantor"?.45:.62)+phase*.07});
+  }
+  onKeyDown(code){const lane=this.keys.indexOf(code);if(lane>=0)this.hitString(lane);if(code==="Space"||code==="KeyE")this.shoot();}
+  onPointer(type){if(type==="down")this.shoot();}
+  update(dt){
+    this.time+=dt;if(!this.active||this.ending)return;this.songTime+=dt;const beat=Math.floor(this.currentBeat());
+    if(beat!==this.lastProcessedBeat){
+      if(this.lastProcessedBeat>=0&&this.lastHitBeat!==this.lastProcessedBeat){this.dread=clamp(this.dread+(2.3+this.boss.phase*.8),0,100);this.health=clamp(this.health-(this.dread>75?1.8:.5),0,100);this.combo=0;}
+      this.lastProcessedBeat=beat;const down=beat%4===0;this.host.audio.tone(down?55:110,down?.09:.045,"sine",down?.08:.035);if(beat%2)this.host.audio.noise(.03,.018,0,2800);
+      if(beat-this.lastSpawnBeat>Math.max(2,5-this.boss.phase)&&this.enemies.length<2+this.boss.phase){this.spawnEnemy(beat);this.lastSpawnBeat=beat;}
+      if(beat%8===7){const hit=7+this.boss.phase*3;this.health=clamp(this.health-hit*(.5+this.dread/150),0,100);this.boss.attack=1;this.host.shake(5+this.boss.phase*2,180);this.host.log("La basse du Chef de chœur traverse votre armure.","bad");}
+    }
+    this.boss.x=Math.sin(this.songTime*.47)*(.85+this.boss.phase*.3);this.boss.z=lerp(this.boss.z,4.9-this.boss.phase*.32,dt*.16);this.boss.flash=Math.max(0,this.boss.flash-dt*4);this.boss.attack=Math.max(0,this.boss.attack-dt*2);
+    for(const e of this.enemies){e.wobble+=dt*(1.5+this.boss.phase*.2);e.x+=Math.sin(e.wobble)*dt*.16;e.z-=e.speed*dt;e.flash=Math.max(0,e.flash-dt*4);if(e.z<.75){this.health=clamp(this.health-(10+(e.type==="cantor"?7:0)),0,100);this.dread=clamp(this.dread+9,0,100);e.hp=0;this.host.audio.noise(.22,.13,0,420);this.host.shake(10,240);}}
+    this.enemies=this.enemies.filter(e=>e.hp>0);this.dread=clamp(this.dread+.26*dt,0,100);this.flash=Math.max(0,this.flash-dt*3.4);this.phaseBanner=Math.max(0,this.phaseBanner-dt);if(this.lastJudge)this.lastJudge.life-=dt;for(const p of this.projectiles)p.life-=dt;this.projectiles=this.projectiles.filter(p=>p.life>0);
+    if(this.dread>=100){this.health=clamp(this.health-18*dt,0,100);}
+    if(this.health<=0)this.fail();if(Math.floor(this.songTime*4)!==Math.floor((this.songTime-dt)*4))this.syncUI();
+  }
+  fail(){if(this.ending)return;this.active=false;this.host.showOverlay("LE CHŒUR VOUS ABSORBE",`<p>Votre rythme disparaît sous les voix. Le Chef de chœur conserve ${Math.max(0,Math.round(this.boss.hp))} points de vie.</p><p>Score : <strong>${fmt(this.score)}</strong> · Combo max : <strong>${this.maxCombo}</strong></p>`,[
+    {label:"Reprendre le concert",primary:true,action:()=>{this.host.hideOverlay();this.reset();}},
+    {label:"Collection",action:()=>location.href="../"},
+  ]);this.host.log("Défaite : votre corde continue de vibrer sans vous.","bad");this.syncUI();}
+  finish(){
+    if(this.ending)return;this.ending=true;this.active=false;const accuracy=this.attempts?this.accurate/this.attempts*100:0;let type="survivor";if(accuracy>=82&&this.health>=55&&this.dread<60)type="conductor";else if(this.dread>=82||this.health<25)type="echo";
+    const endings={
+      conductor:["FIN A — LE CONTRE-CHEF","Votre dernier accord retourne la nef contre son maître. Le silence qui suit possède enfin un tempo humain."],
+      survivor:["FIN B — SORTIE DE SCÈNE","Le Chef de chœur tombe. Vous quittez la salle avant les rappels, avec quatre cordes gravées sous la peau."],
+      echo:["FIN C — RAPPEL ÉTERNEL","Le boss meurt, mais l’Effroi reste à centrer le métronome. Chaque battement futur déclenche les applaudissements de la nef."],
+    };const [title,text]=endings[type];const rec=this.host.load("record",{best:0,endings:[]});rec.best=Math.max(rec.best||0,this.score);if(!rec.endings.includes(type))rec.endings.push(type);this.host.save("record",rec);
+    this.host.showOverlay(title,`<p>${text}</p><p>Score : <strong>${fmt(this.score)}</strong> · Précision : <strong>${Math.round(accuracy)} %</strong> · Vie : <strong>${Math.round(this.health)} %</strong> · Combo max : <strong>${this.maxCombo}</strong></p>`,[
+      {label:"Nouveau concert",primary:true,action:()=>{this.host.hideOverlay();this.reset();}},
+      {label:"Collection",action:()=>location.href="../"},
+    ]);this.host.log(title,type==="conductor"?"good":"warn");this.syncUI();
+  }
+  syncUI(){
+    const beat=Math.round(this.currentBeat());const expected=this.expectedLane(beat);const rec=this.host.load("record",{best:0,endings:[]});const accuracy=this.attempts?Math.round(this.accurate/this.attempts*100):100;
+    this.host.setStatus([
+      {label:"Phase",value:`${this.boss.phase}/3`},
+      {label:"Chef de chœur",value:`${Math.max(0,Math.round(this.boss.hp))}/${this.boss.max}`,meter:this.boss.hp/this.boss.max*100,color:"var(--danger)"},
+      {label:"Vie",value:`${Math.round(this.health)} %`,meter:this.health,color:this.health<30?"var(--danger)":"var(--good)"},
+      {label:"Effroi",value:`${Math.round(this.dread)} %`,meter:this.dread,color:this.dread>70?"var(--danger)":"var(--accent-2)"},
+      {label:"Accord",value:`${Math.round(this.charge)} %`,meter:this.charge,color:"var(--accent)"},
+      {label:"Combo",value:`×${this.combo}`},
+      {label:"Précision",value:`${accuracy} %`},
+      {label:"Score",value:fmt(this.score)},
+      {label:"Record",value:fmt(rec.best||0)},
+      {label:"Fins",value:`${rec.endings?.length||0}/3`},
+    ]);
+    this.host.setObjective(`Corde demandée : <strong style="color:${this.colors[expected]}">${this.labels[expected]}</strong>. Frappez-la sur le prochain temps, chargez l’accord, puis visez et tirez.`);
+    this.host.setActions([
+      ...this.labels.map((l,i)=>({label:`${l} · corde ${i+1}`,primary:i===expected,action:()=>this.hitString(i)})),
+      {label:"TIRER L’ACCORD",warning:true,wide:true,disabled:this.charge<99.5,action:()=>this.shoot()},
+    ]);
+  }
+  drawEnemy(ctx,e){
+    const s=this.projected(e);ctx.save();ctx.translate(s.x,s.y);const size=s.size;ctx.globalAlpha=clamp(1-e.z/13,.35,1);ctx.fillStyle="rgba(0,0,0,.35)";ctx.beginPath();ctx.ellipse(0,size*.72,size*.55,size*.14,0,0,TAU);ctx.fill();ctx.fillStyle=e.flash>0?"#fff":e.type==="cantor"?"#8d74ff":"#15101f";ctx.shadowBlur=e.flash>0?35:18;ctx.shadowColor=e.type==="cantor"?"#8d74ff":"#ff416f";ctx.beginPath();ctx.arc(0,-size*.18,size*.28,0,TAU);ctx.fill();ctx.fillRect(-size*.22,0,size*.44,size*.72);ctx.shadowBlur=0;ctx.fillStyle="#ff547b";ctx.fillRect(-size*.1,-size*.22,size*.06,size*.025);ctx.fillRect(size*.04,-size*.22,size*.06,size*.025);ctx.fillStyle="#e5dfff";ctx.font=`900 ${Math.max(8,size*.1)}px ui-monospace`;ctx.textAlign="center";ctx.fillText(e.type==="cantor"?"CANTOR":"OMBRE",0,size*.42);ctx.fillStyle="#260b18";ctx.fillRect(-size*.36,size*.55,size*.72,5);ctx.fillStyle="#ff5a80";ctx.fillRect(-size*.36,size*.55,size*.72*clamp(e.hp/e.max,0,1),5);ctx.restore();
+  }
+  drawBoss(ctx){
+    const b={...this.boss,type:"boss"},s=this.projected(b);ctx.save();ctx.translate(s.x,s.y);const size=s.size;ctx.globalAlpha=.9;ctx.fillStyle="rgba(0,0,0,.45)";ctx.beginPath();ctx.ellipse(0,size*.9,size*.78,size*.17,0,0,TAU);ctx.fill();ctx.fillStyle=this.boss.flash>0?"#fff":"#07050d";ctx.shadowBlur=this.boss.attack>0?48:26;ctx.shadowColor=this.boss.phase===1?"#7d65ff":this.boss.phase===2?"#ff4e83":"#ff1f48";ctx.beginPath();ctx.arc(0,-size*.25,size*.32,0,TAU);ctx.fill();ctx.fillRect(-size*.28,0,size*.56,size*.9);ctx.shadowBlur=0;ctx.strokeStyle=this.boss.phase===1?"#9886ff":this.boss.phase===2?"#ff6e9a":"#ff3d5f";ctx.lineWidth=Math.max(2,size*.025);for(let i=0;i<6+this.boss.phase*2;i++){const a=-Math.PI*.85+i/(5+this.boss.phase*2)*Math.PI*1.7;ctx.beginPath();ctx.moveTo(Math.cos(a)*size*.28,Math.sin(a)*size*.28-size*.25);ctx.lineTo(Math.cos(a)*size*.54,Math.sin(a)*size*.54-size*.25);ctx.stroke();}
+    ctx.fillStyle="#ff365f";ctx.fillRect(-size*.12,-size*.31,size*.07,size*.035);ctx.fillRect(size*.05,-size*.31,size*.07,size*.035);ctx.fillStyle="#f5eaff";ctx.font=`900 ${Math.max(10,size*.1)}px ui-monospace`;ctx.textAlign="center";ctx.fillText(`PHASE ${this.boss.phase}`,0,size*.49);ctx.restore();
+  }
+  render(ctx){
+    ctx.fillStyle="#04030a";ctx.fillRect(0,0,960,540);const phase=this.boss.phase;const accent=phase===1?"#7164ff":phase===2?"#d449a2":"#ff315b";
+    const g=ctx.createLinearGradient(0,0,0,540);g.addColorStop(0,"#070511");g.addColorStop(.5,"#16091c");g.addColorStop(1,"#050309");ctx.fillStyle=g;ctx.fillRect(0,0,960,540);
+    // cathedral tunnel
+    ctx.strokeStyle=`${accent}35`;ctx.lineWidth=2;for(let i=0;i<9;i++){const inset=i*46;ctx.beginPath();ctx.moveTo(inset,430);ctx.lineTo(480,120+i*8);ctx.lineTo(960-inset,430);ctx.stroke();}for(let i=0;i<12;i++){const y=150+i*25;ctx.beginPath();ctx.moveTo(140-i*10,y);ctx.lineTo(820+i*10,y);ctx.stroke();}
+    ctx.fillStyle="rgba(255,255,255,.025)";for(let i=0;i<14;i++)ctx.fillRect(i*78,110+(i%3)*32,34,280);
+    this.drawBoss(ctx);const sorted=[...this.enemies].sort((a,b)=>b.z-a.z);for(const e of sorted)this.drawEnemy(ctx,e);
+    for(const p of this.projectiles){ctx.save();ctx.globalAlpha=p.life/.24;ctx.strokeStyle="#fff";ctx.lineWidth=5;ctx.shadowBlur=24;ctx.shadowColor="#fff";ctx.beginPath();ctx.moveTo(480,510);ctx.lineTo(p.x,p.y);ctx.stroke();ctx.restore();}
+    const pointer=this.host.input.pointer;ctx.strokeStyle=this.charge>=99.5?"#fff":accent;ctx.lineWidth=2;ctx.beginPath();ctx.arc(pointer.x,pointer.y,17+Math.sin(this.time*6)*2,0,TAU);ctx.moveTo(pointer.x-27,pointer.y);ctx.lineTo(pointer.x-8,pointer.y);ctx.moveTo(pointer.x+8,pointer.y);ctx.lineTo(pointer.x+27,pointer.y);ctx.moveTo(pointer.x,pointer.y-27);ctx.lineTo(pointer.x,pointer.y-8);ctx.moveTo(pointer.x,pointer.y+8);ctx.lineTo(pointer.x,pointer.y+27);ctx.stroke();
+    // rhythm rail
+    const beatPos=this.currentBeat(),nearest=Math.round(beatPos),expected=this.expectedLane(nearest);ctx.fillStyle="rgba(2,2,7,.88)";ctx.fillRect(160,430,640,92);ctx.strokeStyle=`${accent}88`;ctx.strokeRect(160,430,640,92);
+    for(let i=-2;i<=3;i++){const b=nearest+i;const x=480+(b-beatPos)*115;ctx.strokeStyle=i===0?"#fff":`${accent}66`;ctx.lineWidth=i===0?4:2;ctx.beginPath();ctx.moveTo(x,440);ctx.lineTo(x,505);ctx.stroke();if(b>=0){const lane=this.expectedLane(b);ctx.fillStyle=this.colors[lane];ctx.font="900 17px ui-monospace";ctx.textAlign="center";ctx.fillText(this.labels[lane],x,468);}}
+    ctx.textAlign="left";ctx.fillStyle="rgba(2,2,7,.86)";ctx.fillRect(20,18,430,76);ctx.strokeStyle=accent;ctx.strokeRect(20,18,430,76);ctx.fillStyle=accent;ctx.font="900 18px ui-monospace";ctx.fillText(`CHEF DE CHŒUR // PHASE ${phase}`,36,47);ctx.fillStyle="#f7eef9";ctx.font="800 13px ui-sans-serif";ctx.fillText(`CORDE ${this.labels[expected]} · ACCORD ${Math.round(this.charge)}% · COMBO ${this.combo}`,36,73);
+    if(this.lastJudge&&this.lastJudge.life>0){ctx.save();ctx.globalAlpha=clamp(this.lastJudge.life*2,0,1);ctx.fillStyle=this.lastJudge.text.includes("PARFAIT")?"#fff":this.colors[this.lastJudge.lane];ctx.font="900 24px ui-monospace";ctx.textAlign="center";ctx.fillText(this.lastJudge.text,480,128);ctx.restore();}
+    if(this.phaseBanner>0){ctx.save();ctx.globalAlpha=clamp(this.phaseBanner/1.2,0,1);ctx.fillStyle="rgba(0,0,0,.7)";ctx.fillRect(0,188,960,100);ctx.fillStyle=accent;ctx.font="1000 40px ui-monospace";ctx.textAlign="center";ctx.fillText(`MOUVEMENT ${phase} / 3`,480,250);ctx.restore();}
+    if(this.flash>0){ctx.fillStyle=`rgba(255,255,255,${this.flash*.09})`;ctx.fillRect(0,0,960,540);}
+    this.vignette(ctx,.6);this.scanlines(ctx,.03);
+  }
+}
+
+
+const GameClass = {
+  "arcade-null": ArcadeNullGame,
+  "kidz-tv-after-hours": KidzTVGame,
+  "l-envers-service-de-nuit": LEnversGame,
+  "liminal-escape": LiminalEscapeGame,
+  "nocturne-dead-frequency": NocturneDeadFrequencyGame,
+  "chord-of-dread": ChordOfDreadGame,
+}[route];
+if (!GameClass) {
+  document.title = "Jeu introuvable";
+  document.body.innerHTML = '<main class="hub"><section class="hub-hero"><h1>Jeu introuvable</h1><p class="subtitle">Cette route ne correspond à aucun jeu restauré.</p><a class="btn primary" href="/">Retour à la collection</a></section></main>';
+} else {
+  document.body.dataset.game = route;
+  document.title = GAME_META[route].title;
+  const host = new GameHost(route);
+  host.mount(new GameClass(host));
+}
+}
+</script>
+</body>
+</html>
