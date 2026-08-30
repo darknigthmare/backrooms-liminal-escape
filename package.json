@@ -1,12 +1,13 @@
 {
   "name": "backrooms-liminal-escape",
-  "version": "1.0.0",
+  "version": "3.0.0",
   "private": true,
-  "description": "Jeu d'exploration liminale autonome, restaure depuis la collection du 2 aout 2026.",
+  "description": "Survival-horror liminal original, génératif et jouable hors ligne.",
   "type": "module",
   "scripts": {
-    "check": "node tools/check.mjs",
-    "test": "node tools/check.mjs",
+    "check": "node --test tests/*.test.mjs && node tools/check.mjs",
+    "test": "npm run check",
+    "build": "npm run check && node tools/build.mjs",
     "start": "node tools/serve.mjs"
   },
   "engines": {
