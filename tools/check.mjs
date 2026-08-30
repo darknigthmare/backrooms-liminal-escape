@@ -87,8 +87,15 @@ for (const shellPath of ["/index.html", "/styles.css", "/src/core.mjs", "/src/ga
   assert(serviceWorker.includes('"' + shellPath + '"'), "service worker precaches " + shellPath);
 }
 assert(serviceWorker.includes("if (!response.ok) return response;"), "service worker does not cache failed navigations");
-assert(vercel.includes('"outputDirectory": "dist"'), "Vercel serves the production build");
-assert(vercel.includes("Content-Security-Policy"), "security headers are configured");
+let vercelConfig = null;
+try {
+  vercelConfig = JSON.parse(vercel);
+  assert(true, "Vercel config JSON parses");
+} catch {
+  assert(false, "Vercel config JSON parses");
+}
+assert(vercelConfig?.outputDirectory === "dist", "Vercel serves the production build");
+assert(JSON.stringify(vercelConfig?.headers || []).includes("Content-Security-Policy"), "security headers are configured");
 
 for (const relativePath of ["src/core.mjs", "src/game.js", "sw.js", "tools/serve.mjs", "tools/build.mjs"]) {
   const result = spawnSync(process.execPath, ["--check", join(root, relativePath)], { encoding: "utf8" });
