@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "verified_at": "2026-11-04",
+  "tools": {
+    "spec_kit": {
+      "repository": "https://github.com/github/spec-kit",
+      "commit": "34a0d388eac671d656eb05b125ad3ed6056168ed",
+      "version": "1.3.0",
+      "verified_at": "2026-11-04",
+      "license": "MIT",
+      "role": "Spécifications, plan technique et tâches pour une évolution délimitée du projet.",
+      "capability": "Préparation optionnelle des intégrations Codex et Claude Code ; reprise des spécifications existantes.",
+      "docs": [
+        "https://github.com/github/spec-kit",
+        "https://github.com/github/spec-kit/blob/34a0d388eac671d656eb05b125ad3ed6056168ed/README.md"
+      ]
+    },
+    "superpowers": {
+      "repository": "https://github.com/obra/superpowers",
+      "commit": "22f0b463e7a5e579904dd6211a520321035526f7",
+      "version": "7.0.2",
+      "verified_at": "2026-11-04",
+      "license": "MIT",
+      "role": "Compétences d'implémentation, de diagnostic, de revue et de vérification adaptées au changement.",
+      "capability": "Plugin natif à installer dans Codex ou Claude Code ; chargement local d'une révision précise possible avec Claude Code.",
+      "docs": [
+        "https://github.com/obra/superpowers",
+        "https://github.com/obra/superpowers/blob/22f0b463e7a5e579904dd6211a520321035526f7/README.md",
+        "https://github.com/obra/superpowers/releases/tag/v7.0.2",
+        "https://code.claude.com/docs/en/discover-plugins",
+        "https://code.claude.com/docs/en/settings-reference",
+        "https://code.claude.com/docs/en/plugins/marketplace-reference"
+      ]
+    },
+    "claude_game_studios": {
+      "repository": "https://github.com/Donchitos/Claude-Code-Game-Studios",
+      "commit": "05ad7c8a5b8aa2aa86bbd3439ae7cf7295cac418",
+      "version": "1.2.0",
+      "verified_at": "2026-11-04",
+      "license": "MIT",
+      "role": "Agents et compétences spécialisés dans la conception, la réalisation et la validation de jeux.",
+      "capability": "Adoption optionnelle sous Claude Code, avec conservation de la configuration existante ; ce framework n'est pas un plugin de marketplace.",
+      "docs": [
+        "https://github.com/Donchitos/Claude-Code-Game-Studios",
+        "https://github.com/Donchitos/Claude-Code-Game-Studios/blob/05ad7c8a5b8aa2aa86bbd3439ae7cf7295cac418/README.md",
+        "https://github.com/Donchitos/Claude-Code-Game-Studios/blob/05ad7c8a5b8aa2aa86bbd3439ae7cf7295cac418/.claude/docs/setup-requirements.md"
+      ]
+    }
+  }
+}
