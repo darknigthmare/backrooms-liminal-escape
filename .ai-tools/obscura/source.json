@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "name": "obscura",
+  "verified_at": "2026-11-15",
+  "repository": "https://github.com/h4ckf0r0day/obscura",
+  "commit": "0d9a2f764ffdb097269da048002c593865e83a9e",
+  "skill_path": "skills/obscura/SKILL.md",
+  "skill_git_blob_sha": "4c665b1cd6f34c291c4ee7f46e293a45ebb693aa",
+  "license": "Apache-2.0",
+  "license_path": "LICENSE",
+  "license_git_blob_sha": "b09cd7856d58590578ee1a4f3ad45d1310a97f87",
+  "installation": {
+    "scope": "repository",
+    "copies": [
+      ".agents/skills/obscura/SKILL.md",
+      ".claude/skills/obscura/SKILL.md"
+    ],
+    "upstream_skill_modified": false,
+    "automatic_hooks": false,
+    "automatic_mcp_registration": false,
+    "binary_installed_by_this_integration": false
+  },
+  "runtime": {
+    "release": "v0.2.7",
+    "release_commit": "0ecc41770da5c5300227dd83a15bfa1e5100d5d4",
+    "skill_matches_release": true,
+    "variant": "render-enabled, no stealth",
+    "executable": "obscura",
+    "worker_executable": "obscura-worker",
+    "archives": [
+      {
+        "name": "obscura-aarch64-linux.tar.gz",
+        "url": "https://github.com/h4ckf0r0day/obscura/releases/download/v0.2.7/obscura-aarch64-linux.tar.gz",
+        "sha256": "4ee0aeeb38fa8bb2cb004ba104abe1c79f1bdfd02f51672c694e8234a5ae0e5c",
+        "bytes": 69952302
+      },
+      {
+        "name": "obscura-aarch64-macos.tar.gz",
+        "url": "https://github.com/h4ckf0r0day/obscura/releases/download/v0.2.7/obscura-aarch64-macos.tar.gz",
+        "sha256": "fc7e73f23058f18d6d5be983d83b24ba374d12167677657a307a9476c0f5a7c1",
+        "bytes": 67612634
+      },
+      {
+        "name": "obscura-x86_64-linux.tar.gz",
+        "url": "https://github.com/h4ckf0r0day/obscura/releases/download/v0.2.7/obscura-x86_64-linux.tar.gz",
+        "sha256": "11b53d27cd743e00e196e216920e7f3f794cf378e3f1792b8d25d3beabaf9cad",
+        "bytes": 72018118
+      },
+      {
+        "name": "obscura-x86_64-macos.tar.gz",
+        "url": "https://github.com/h4ckf0r0day/obscura/releases/download/v0.2.7/obscura-x86_64-macos.tar.gz",
+        "sha256": "c47383e5b5551e09d2055ee7bdcce788af409fb4394e39bdaf179734df18e829",
+        "bytes": 69818596
+      },
+      {
+        "name": "obscura-x86_64-windows.zip",
+        "url": "https://github.com/h4ckf0r0day/obscura/releases/download/v0.2.7/obscura-x86_64-windows.zip",
+        "sha256": "be983b663552e11faf8c1e07696578bad622dbeb48afb9f59036032ca8e97fb3",
+        "bytes": 72427564
+      }
+    ]
+  },
+  "documentation": [
+    "https://github.com/h4ckf0r0day/obscura/blob/0d9a2f764ffdb097269da048002c593865e83a9e/README.md",
+    "https://github.com/h4ckf0r0day/obscura/blob/0d9a2f764ffdb097269da048002c593865e83a9e/skills/obscura/SKILL.md",
+    "https://developers.openai.com/codex/skills",
+    "https://code.claude.com/docs/en/skills"
+  ]
+}
