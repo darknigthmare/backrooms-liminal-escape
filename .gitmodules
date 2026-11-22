@@ -1,0 +1,6 @@
+[submodule ".ai-tools/upstream/3dviz-pro-max"]
+	path = .ai-tools/upstream/3dviz-pro-max
+	url = https://github.com/viettranx/3dviz-pro-max.git
+[submodule ".ai-tools/upstream/awesome-gamedev-agent-skills"]
+	path = .ai-tools/upstream/awesome-gamedev-agent-skills
+	url = https://github.com/gamedev-skills/awesome-gamedev-agent-skills.git
